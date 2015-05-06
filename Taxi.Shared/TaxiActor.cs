@@ -10,7 +10,7 @@ namespace Taxi.Shared
         private readonly Queue<Position> _positions = new Queue<Position>();
         private bool _idle;
 
-        private ILoggingAdapter _log = Context.GetLogger();
+        private readonly ILoggingAdapter _log = Context.GetLogger();
 
         public TaxiActor (IActorRef reportBackTo,string regNr)
         {
