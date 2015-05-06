@@ -1,41 +1,43 @@
-﻿using Akka.Actor;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Akka.Actor;
+using Akka.Event;
 
 namespace Taxi.Shared
 {
     public class TaxiActor : ReceiveActor
     {
-        private readonly Queue<Position> _positions = new Queue<Position>(); 
-        private Position _position;
+        private readonly Queue<Position> _positions = new Queue<Position>();
         private bool _idle;
-        private ICancelable _idleTimer;
 
-        public TaxiActor ()
+        private ILoggingAdapter _log = Context.GetLogger();
+
+        public TaxiActor (IActorRef reportBackTo,string regNr)
         {
+            ICancelable idleTimer = null;
 
             Receive<Idle>(_ =>
             {
-                _idle = true;
-                //TODO: notify server?
+                _idle = true;               
             });
 
             Receive<GpsPosition>(p =>
             {                
-                _position = new Position()
+                var position = new Position()
                 {
                     //TODO: uppdatera
                 };
-                _positions.Enqueue(_position);
+                _positions.Enqueue(position);
                 
-                if (_idleTimer != null)
-                    _idleTimer.Cancel();
+                if (idleTimer != null)
+                    idleTimer.Cancel();
 
-                _idleTimer = Context.System.Scheduler.ScheduleTellOnceCancelable(TimeSpan.FromMinutes(1),Self,new Idle(),Self);
+                idleTimer = Context.System.Scheduler.ScheduleTellOnceCancelable(TimeSpan.FromMinutes(1),Self,new Idle(),Self);
                 _idle = false;
+
+                _log.Info("Taxi {0} new position {1} {2}",regNr,position.X,position.Y);
+
+                reportBackTo.Tell(new PositionChanged(position.X,position.Y));
             });
         }
     }
