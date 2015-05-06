@@ -1,0 +1,8 @@
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\Taxi.Shared\bin\Debug\Taxi.Shared.dll
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\Taxi.Shared\bin\Debug\Taxi.Shared.pdb
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\Taxi.Shared\bin\Debug\Akka.dll
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\Taxi.Shared\bin\Debug\Newtonsoft.Json.dll
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\Taxi.Shared\bin\Debug\Akka.xml
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\Taxi.Shared\bin\Debug\Newtonsoft.Json.xml
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\Taxi.Shared\obj\Debug\Taxi.Shared.dll
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\Taxi.Shared\obj\Debug\Taxi.Shared.pdb

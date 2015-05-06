@@ -1,0 +1,16 @@
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\TaxiHost\bin\Debug\TaxiHost.exe.config
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\TaxiHost\bin\Debug\TaxiHost.exe
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\TaxiHost\bin\Debug\TaxiHost.pdb
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\TaxiHost\bin\Debug\Akka.dll
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\TaxiHost\bin\Debug\Akka.Remote.dll
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\TaxiHost\bin\Debug\Google.ProtocolBuffers.dll
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\TaxiHost\bin\Debug\Google.ProtocolBuffers.Serialization.dll
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\TaxiHost\bin\Debug\Helios.dll
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\TaxiHost\bin\Debug\Newtonsoft.Json.dll
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\TaxiHost\bin\Debug\Akka.xml
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\TaxiHost\bin\Debug\Akka.Remote.xml
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\TaxiHost\bin\Debug\Google.ProtocolBuffers.xml
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\TaxiHost\bin\Debug\Google.ProtocolBuffers.Serialization.xml
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\TaxiHost\bin\Debug\Newtonsoft.Json.xml
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\TaxiHost\obj\Debug\TaxiHost.exe
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\TaxiHost\obj\Debug\TaxiHost.pdb
