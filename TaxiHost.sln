@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiHost", "TaxiHost\TaxiHo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiShared", "Taxi.Shared\TaxiShared.csproj", "{983C8C18-8CD3-4EBE-9606-56CFAABE902C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication2", "WebApplication2\WebApplication2.csproj", "{ED737E63-2BDB-49B8-BF71-4502A345C9FA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiFrontend", "WebApplication2\TaxiFrontend.csproj", "{ED737E63-2BDB-49B8-BF71-4502A345C9FA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiBackend", "TaxiBackend\TaxiBackend.csproj", "{825E660C-09D1-436F-A889-1CCB57835B0F}"
 EndProject

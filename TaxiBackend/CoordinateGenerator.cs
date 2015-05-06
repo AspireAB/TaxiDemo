@@ -1,11 +1,12 @@
-﻿using Akka.Actor;
+﻿using System.Threading;
+using Akka.Actor;
 using TaxiShared;
 
 namespace TaxiBackend
 {
     public class CoordinateGenerator
     {
-        public CoordinateGenerator(IActorRef publisher)
+        public static void CreateSimulators(IActorRef publisher)
         {
             for (var i = 0; i < 100; i++)
             {
@@ -13,6 +14,7 @@ namespace TaxiBackend
                 geoCoordinateSimulator.Start();
                 geoCoordinateSimulator.PositionChanged +=
                     (sender, args) => publisher.Tell(new Publisher.Position(args.Longitude, args.Latitude, args.Id));
+                Thread.Sleep(33);
             }
         }
     }

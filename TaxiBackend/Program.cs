@@ -11,7 +11,7 @@ namespace TaxiBackend
             using (var system = ActorSystem.Create("TaxiBackend"))
             {
                 var publisher = system.ActorOf(Props.Create(() => new PublisherActor()), "publisher");
-                new CoordinateGenerator(publisher);
+                CoordinateGenerator.CreateSimulators(publisher);
 
                 Console.ReadLine();
             }
