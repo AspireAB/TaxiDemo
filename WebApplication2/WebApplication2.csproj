@@ -159,9 +159,9 @@
     <TypeScriptCompile Include="Scripts\typings\google-maps\google-maps.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Taxi.Shared\Taxi.Shared.csproj">
+    <ProjectReference Include="..\Taxi.Shared\TaxiShared.csproj">
       <Project>{983c8c18-8cd3-4ebe-9606-56cfaabe902c}</Project>
-      <Name>Taxi.Shared</Name>
+      <Name>TaxiShared</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

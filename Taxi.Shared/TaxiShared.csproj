@@ -7,8 +7,8 @@
     <ProjectGuid>{983C8C18-8CD3-4EBE-9606-56CFAABE902C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Taxi.Shared</RootNamespace>
-    <AssemblyName>Taxi.Shared</AssemblyName>
+    <RootNamespace>TaxiShared</RootNamespace>
+    <AssemblyName>TaxiShared</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -51,13 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GpsPosition.cs" />
-    <Compile Include="Position.cs" />
-    <Compile Include="PositionChanged.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StartupMessage.cs" />
+    <Compile Include="PublisherActor.cs" />
     <Compile Include="TaxiActor.cs" />
-    <Compile Include="TaxiStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

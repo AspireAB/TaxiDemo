@@ -1,0 +1,8 @@
+C:\Projects\Git\TaxiDemo\Taxi.Shared\bin\Debug\TaxiShared.dll
+C:\Projects\Git\TaxiDemo\Taxi.Shared\bin\Debug\TaxiShared.pdb
+C:\Projects\Git\TaxiDemo\Taxi.Shared\bin\Debug\Akka.dll
+C:\Projects\Git\TaxiDemo\Taxi.Shared\bin\Debug\Newtonsoft.Json.dll
+C:\Projects\Git\TaxiDemo\Taxi.Shared\bin\Debug\Akka.xml
+C:\Projects\Git\TaxiDemo\Taxi.Shared\bin\Debug\Newtonsoft.Json.xml
+C:\Projects\Git\TaxiDemo\Taxi.Shared\obj\Debug\TaxiShared.dll
+C:\Projects\Git\TaxiDemo\Taxi.Shared\obj\Debug\TaxiShared.pdb

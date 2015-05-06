@@ -1,19 +1,19 @@
 ﻿using Akka.Actor;
-using Taxi.Shared;
+using TaxiShared;
 
 namespace TaxiBackend
 {
-   public class CoordinateGenerator
-   {
-      public CoordinateGenerator(IActorRef publisher)
-      {
-         for (int i = 0; i < 100; i++)
-         {
-            var geoCoordinateSimulator = new GeoCoordinateSimulator(i);
-            geoCoordinateSimulator.Start();
-            geoCoordinateSimulator.PositionChanged += (sender, args) => publisher.Tell(new PositionChanged(args.Longitude, args.Latitude, args.Id));
-         }
-      }
-
-   }
+    public class CoordinateGenerator
+    {
+        public CoordinateGenerator(IActorRef publisher)
+        {
+            for (var i = 0; i < 100; i++)
+            {
+                var geoCoordinateSimulator = new GeoCoordinateSimulator(i);
+                geoCoordinateSimulator.Start();
+                geoCoordinateSimulator.PositionChanged +=
+                    (sender, args) => publisher.Tell(new Publisher.Position(args.Longitude, args.Latitude, args.Id));
+            }
+        }
+    }
 }

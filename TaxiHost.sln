@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiHost", "TaxiHost\TaxiHost.csproj", "{0AACFE2C-5287-483B-9EF7-439F07A42FA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taxi.Shared", "Taxi.Shared\Taxi.Shared.csproj", "{983C8C18-8CD3-4EBE-9606-56CFAABE902C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiShared", "Taxi.Shared\TaxiShared.csproj", "{983C8C18-8CD3-4EBE-9606-56CFAABE902C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication2", "WebApplication2\WebApplication2.csproj", "{ED737E63-2BDB-49B8-BF71-4502A345C9FA}"
 EndProject

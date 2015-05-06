@@ -1,7 +1,8 @@
 ﻿using Akka.Actor;
 using Microsoft.AspNet.SignalR;
-using Taxi.Shared;
+using TaxiShared;
 using WebApplication2.Hubs;
+
 
 namespace WebApplication2
 {
@@ -9,12 +10,12 @@ namespace WebApplication2
    {
       public SignalRActor()
       {
-         Receive<PositionChanged>(p =>
+         Receive<Publisher.Position>(p =>
          {
             var chat = GlobalHost.ConnectionManager.GetHubContext<PositionHub>();
             chat.Clients.All.positionChanged(p);
          });
-         Receive<TaxiStatus>(status =>
+         Receive<Taxi.Status>(status =>
          {
             var chat = GlobalHost.ConnectionManager.GetHubContext<PositionHub>();
             chat.Clients.All.statusChanged(status);

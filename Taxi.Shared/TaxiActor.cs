@@ -1,71 +1,97 @@
 ﻿using System;
-using System.Collections.Generic;
 using Akka.Actor;
-using Akka.Event;
 
-namespace Taxi.Shared
+namespace TaxiShared
 {
-   public class TaxiActor : ReceiveActor
-   {
-      private readonly IActorRef signalR;
-      private readonly string regNr;
-      ICancelable idleTimer = null;
+    public static class Taxi
+    {
+        public class Idle
+        {
+        }
 
-      public TaxiActor(IActorRef signalR, string regNr)
-      {
-         this.signalR = signalR;
-         this.regNr = regNr;
+        public class Position
+        {
+            public Position(double longitude, double latitude)
+            {
+                Longitude = longitude;
+                Latitude = latitude;
+            }
 
-         Become(Active);
-      }
+            public double Longitude { get; private set; }
+            public double Latitude { get; private set; }
+        }
 
-      public void Active()
-      {
-         Receive<Idle>(_ =>
-         {
-            Become(Inactive);
-            signalR.Tell(new TaxiStatus(GpsStatus.Inactive, regNr));
-         });
+        public class Status
+        {
+            public GpsStatus GpsStatus { get; set; }
+            public string RegNr { get; set; }
 
-         Receive<GpsPosition>(p =>
-         {
-            ScheduleIdleTimer();
+            public Status(GpsStatus gpsStatus, string regNr)
+            {
+                GpsStatus = gpsStatus;
+                RegNr = regNr;
+            }
+        }
+    }
 
-            signalR.Tell(new PositionChanged(p.Longitude, p.Latitude, regNr));
-         });
-      }
 
-      public void Inactive()
-      {
-         Receive<GpsPosition>(p =>
-         {
+
+    public class TaxiActor : ReceiveActor
+    {
+        private readonly string _regNr;
+        private readonly IActorRef _signalR;
+        private ICancelable _idleTimer;
+
+        public TaxiActor(IActorRef signalR, string regNr)
+        {
+            _signalR = signalR;
+            _regNr = regNr;
+
             Become(Active);
-            signalR.Tell(new TaxiStatus(GpsStatus.Active, regNr));
-            
-            ScheduleIdleTimer();
+        }
 
-            signalR.Tell(new PositionChanged(p.Longitude, p.Latitude, regNr));
-         });
-      }
+        public void Active()
+        {
+            Receive<Taxi.Idle>(_ =>
+            {
+                Become(Inactive);
+                _signalR.Tell(new Taxi.Status(GpsStatus.Inactive, _regNr));
+            });
 
-      private void ScheduleIdleTimer()
-      {
-         if (idleTimer != null)
-            idleTimer.Cancel();
+            Receive<Taxi.Position>(p =>
+            {
+                ScheduleIdleTimer();
 
-         idleTimer = Context.System.Scheduler
-            .ScheduleTellOnceCancelable(TimeSpan.FromSeconds(1), Self, new Idle(), Self);
-      }
-   }
+                _signalR.Tell(new Publisher.Position(p.Longitude, p.Latitude, _regNr));
+            });
+        }
 
-   public enum GpsStatus
-   {
-      Inactive = 0,
-      Active = 1
-   }
+        public void Inactive()
+        {
+            Receive<Taxi.Position>(p =>
+            {
+                Become(Active);
+                _signalR.Tell(new Taxi.Status(GpsStatus.Active, _regNr));
 
-   public class Idle
-   {
+                ScheduleIdleTimer();
 
-   }
+                _signalR.Tell(new Publisher.Position(p.Longitude, p.Latitude, _regNr));
+            });
+        }
+
+        private void ScheduleIdleTimer()
+        {
+            if (_idleTimer != null)
+                _idleTimer.Cancel();
+
+            _idleTimer = Context.System.Scheduler
+                .ScheduleTellOnceCancelable(TimeSpan.FromSeconds(1), Self, new Taxi.Idle(), Self);
+        }
+    }
+
+    public enum GpsStatus
+    {
+        Inactive = 0,
+        Active = 1
+    }
 }

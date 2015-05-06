@@ -65,16 +65,15 @@
     <Compile Include="GeoCoordinateSimulator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PublisherActor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Taxi.Shared\Taxi.Shared.csproj">
+    <ProjectReference Include="..\Taxi.Shared\TaxiShared.csproj">
       <Project>{983c8c18-8cd3-4ebe-9606-56cfaabe902c}</Project>
-      <Name>Taxi.Shared</Name>
+      <Name>TaxiShared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
