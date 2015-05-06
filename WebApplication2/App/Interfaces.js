@@ -1,1 +1,9 @@
-﻿//# sourceMappingURL=Interfaces.js.map
+﻿var App;
+(function (App) {
+    (function (GpsStatus) {
+        GpsStatus[GpsStatus["inactive"] = 0] = "inactive";
+        GpsStatus[GpsStatus["active"] = 1] = "active";
+    })(App.GpsStatus || (App.GpsStatus = {}));
+    var GpsStatus = App.GpsStatus;
+})(App || (App = {}));
+//# sourceMappingURL=Interfaces.js.map

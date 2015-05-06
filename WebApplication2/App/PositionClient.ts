@@ -1,7 +1,10 @@
 ﻿module App {
    export class ChatClient {
       private map: google.maps.Map = null;
-      private positionDictionary: { id: number; marker: google.maps.Circle }[] = []
+      private positionDictionary: {
+         id: string;
+         marker: google.maps.Circle;
+      }[] = []
 
       constructor() {
          this.initMap();
@@ -15,8 +18,40 @@
          this.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
       }
 
-      public setMarker = (id: number, position: google.maps.LatLng) => {
-         var markers = this.positionDictionary.filter(d => d.id === id);
+
+      public setMarker = (regNr: string, position: google.maps.LatLng) => {
+         var marker = this.getMarker(regNr);
+
+         marker.marker.setCenter(position);
+
+      }
+
+      public onClick = (position: google.maps.LatLng) => {
+         var panoramaOptions = {
+            position: position,
+            pov: {
+               heading: 34,
+               pitch: 10
+            }
+         };
+
+         var panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'), panoramaOptions);
+         this.map.setStreetView(panorama);
+      }
+
+      public positionChanged = (objectPosition: IPositionChanged) => {
+
+         var latitude = objectPosition.Latitude;
+         var longitude = objectPosition.Longitude;
+
+         var latlng = new google.maps.LatLng(latitude, longitude);
+
+         this.setMarker(objectPosition.RegNr, latlng);
+
+      };
+
+      public getMarker = (regNr: string) => {
+         var markers = this.positionDictionary.filter(d => d.id === regNr);
          if (markers.length === 0) {
             var circleOptions = <google.maps.CircleOptions>{
                strokeColor: '#FF0000',
@@ -25,30 +60,36 @@
                fillColor: '#FF0000',
                fillOpacity: 0.35,
                map: this.map,
-               center: position,
-               radius: 20
+               radius: 20,
+               
             };
-            // Add the circle for this city to the map.
-            var newMarker = new google.maps.Circle(circleOptions);
 
-            this.positionDictionary.push({
-               id: id,
-               marker: newMarker
+
+            var newMarker = new google.maps.Circle(circleOptions);
+            newMarker.addListener('click', () => {
+               var position = newMarker.getCenter();
+               this.onClick(newMarker.getCenter());
             });
-         } else {
-            var positionPair = markers[0];
-            positionPair.marker.setCenter(position);
+            var item = {
+               id: regNr,
+               marker: newMarker,
+            };
+            this.positionDictionary.push(item);
+            return item;
          }
+         var positionPair = markers[0];
+
+         return positionPair;
       }
 
-      public positionChanged = (objectPosition: ObjectPosition) => {
-         var latitude = objectPosition.Latitude;
-         var longitude = objectPosition.Longitude;
-
-         var latlng = new google.maps.LatLng(latitude, longitude);
-
-         this.setMarker(objectPosition.Id, latlng);
-
-      };
+      public statusChanged = (taxiStatus: ITaxiStatus) => {
+         var marker = this.getMarker(taxiStatus.RegNr);
+         
+         if (taxiStatus.GpsStatus === GpsStatus.inactive) {
+            marker.marker.set("fillColor", "#000000");
+         } else {
+            marker.marker.set("fillColor", '#FF0000');
+         }
+      }
    }
 }

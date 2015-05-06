@@ -1,7 +1,7 @@
 ﻿module App {
 
-   export interface ObjectPosition {
-      Id: number;
+   export interface IPositionChanged {
+      RegNr: string;
       Latitude: number;
       Longitude: number;
    }
@@ -13,6 +13,15 @@
          Latitude: number;
          Longitude: number;
       }
+   }
+
+   export interface ITaxiStatus {
+      RegNr: string;
+      GpsStatus: GpsStatus;
+   }
+   export enum GpsStatus {
+      inactive = 0,
+      active = 1
    }
 }
 

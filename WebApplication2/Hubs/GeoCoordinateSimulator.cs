@@ -17,6 +17,7 @@ namespace GpsSimulator
       private readonly int id;
       private static Random randomizer = new Random();
       private Timer timer;
+      DateTime dateTime = DateTime.Now;
 
       /// <summary>
       /// Initializes a new instance of the <see cref="GeoCoordinateSimulator" /> class.
@@ -26,7 +27,7 @@ namespace GpsSimulator
          this.id = id;
          timer = new Timer()
          {
-            Interval = 50
+            Interval = 100
          };
          timer.Elapsed += timer_Tick;
          Status = GeoPositionStatus.NoData;
@@ -43,6 +44,7 @@ namespace GpsSimulator
       /// <param name="e"></param>
       private void timer_Tick(object sender, EventArgs e)
       {
+
          Status = GeoPositionStatus.Ready;
          var oldPosition = Position;
          if (oldPosition == null)
@@ -195,9 +197,17 @@ namespace GpsSimulator
          {
             if (m_Position != value)
             {
-               m_Position = value;
-               if (PositionChanged != null)
-                  PositionChanged(this, new ObjectPosition(id, m_Position.Location));
+               if (dateTime < DateTime.Now)
+               {
+                  if (randomizer.Next(100) == 1)
+                  {
+                     dateTime = DateTime.Now.AddSeconds(randomizer.Next(5, 10));
+                  }
+
+                  m_Position = value;
+                  if (PositionChanged != null)
+                     PositionChanged(this, new ObjectPosition(id.ToString(), m_Position.Location));
+               }
             }
          }
       }
@@ -226,7 +236,7 @@ namespace GpsSimulator
 
    public class ObjectPosition
    {
-      public ObjectPosition(int id, GeoCoordinate position)
+      public ObjectPosition(string id, GeoCoordinate position)
       {
          Id = id;
 
@@ -238,6 +248,6 @@ namespace GpsSimulator
 
       public double Latitude { get; set; }
 
-      public int Id { get; set; }
+      public string Id { get; set; }
    }
 }

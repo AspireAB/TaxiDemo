@@ -5,16 +5,17 @@ using System.Text;
 
 namespace Taxi.Shared
 {
-    class PositionChanged
-    {
-        private decimal p1;
-        private decimal p2;
+   public class PositionChanged
+   {
+      public double Longitude { get; set; }
+      public double Latitude { get; set; }
+      public string RegNr { get; set; }
 
-        public PositionChanged(decimal p1, decimal p2)
-        {
-            // TODO: Complete member initialization
-            this.p1 = p1;
-            this.p2 = p2;
-        }
-    }
+      public PositionChanged(double longitude, double latitude, string regNr)
+      {
+         Longitude = longitude;
+         Latitude = latitude;
+         RegNr = regNr;
+      }
+   }
 }

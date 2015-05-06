@@ -59,3 +59,7 @@ C:\Users\JNORDIN\Source\Repos\TaxiDemo\WebApplication2\bin\System.Web.Mvc.xml
 C:\Users\JNORDIN\Source\Repos\TaxiDemo\WebApplication2\obj\Debug\WebApplication2.csprojResolveAssemblyReference.cache
 C:\Users\JNORDIN\Source\Repos\TaxiDemo\WebApplication2\obj\Debug\WebApplication2.dll
 C:\Users\JNORDIN\Source\Repos\TaxiDemo\WebApplication2\obj\Debug\WebApplication2.pdb
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\WebApplication2\bin\Akka.dll
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\WebApplication2\bin\Taxi.Shared.dll
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\WebApplication2\bin\Taxi.Shared.pdb
+C:\Users\JNORDIN\Source\Repos\TaxiDemo\WebApplication2\bin\Akka.xml

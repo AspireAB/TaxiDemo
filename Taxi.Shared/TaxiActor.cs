@@ -5,51 +5,67 @@ using Akka.Event;
 
 namespace Taxi.Shared
 {
-    public class TaxiActor : ReceiveActor
-    {
-        private readonly Queue<Position> _positions = new Queue<Position>();
-        private bool _idle;
+   public class TaxiActor : ReceiveActor
+   {
+      private readonly IActorRef signalR;
+      private readonly string regNr;
+      ICancelable idleTimer = null;
 
-        private readonly ILoggingAdapter _log = Context.GetLogger();
+      public TaxiActor(IActorRef signalR, string regNr)
+      {
+         this.signalR = signalR;
+         this.regNr = regNr;
 
-        public TaxiActor (IActorRef reportBackTo,string regNr)
-        {
-            ICancelable idleTimer = null;
+         Become(Active);
+      }
 
-            Receive<Idle>(_ =>
-            {
-                _idle = true;               
-            });
+      public void Active()
+      {
+         Receive<Idle>(_ =>
+         {
+            Become(Inactive);
+            signalR.Tell(new TaxiStatus(GpsStatus.Inactive, regNr));
+         });
 
-            Receive<GpsPosition>(p =>
-            {                
-                var position = new Position()
-                {
-                    //TODO: uppdatera
-                };
-                _positions.Enqueue(position);
-                
-                if (idleTimer != null)
-                    idleTimer.Cancel();
+         Receive<GpsPosition>(p =>
+         {
+            ScheduleIdleTimer();
 
-                idleTimer = Context.System.Scheduler.ScheduleTellOnceCancelable(TimeSpan.FromMinutes(1),Self,new Idle(),Self);
-                _idle = false;
+            signalR.Tell(new PositionChanged(p.Longitude, p.Latitude, regNr));
+         });
+      }
 
-                _log.Info("Taxi {0} new position {1} {2}",regNr,position.X,position.Y);
+      public void Inactive()
+      {
+         Receive<GpsPosition>(p =>
+         {
+            Become(Active);
+            signalR.Tell(new TaxiStatus(GpsStatus.Active, regNr));
+            
+            ScheduleIdleTimer();
 
-                reportBackTo.Tell(new PositionChanged(position.X,position.Y));
-            });
-        }
-    }
+            signalR.Tell(new PositionChanged(p.Longitude, p.Latitude, regNr));
+         });
+      }
 
-    public class Idle
-    {
-        
-    }
+      private void ScheduleIdleTimer()
+      {
+         if (idleTimer != null)
+            idleTimer.Cancel();
 
-    public class Position
-    {
-        public decimal X { get; set; }
-        public decimal Y { get; set; }
-    }
+         idleTimer = Context.System.Scheduler
+            .ScheduleTellOnceCancelable(TimeSpan.FromSeconds(1), Self, new Idle(), Self);
+      }
+   }
+
+   public enum GpsStatus
+   {
+      Inactive = 0,
+      Active = 1
+   }
+
+   public class Idle
+   {
+
+   }
 }

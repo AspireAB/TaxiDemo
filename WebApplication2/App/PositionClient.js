@@ -12,9 +12,34 @@
                 };
                 _this.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
             };
-            this.setMarker = function (id, position) {
+            this.setMarker = function (regNr, position) {
+                var marker = _this.getMarker(regNr);
+
+                marker.marker.setCenter(position);
+            };
+            this.onClick = function (position) {
+                var panoramaOptions = {
+                    position: position,
+                    pov: {
+                        heading: 34,
+                        pitch: 10
+                    }
+                };
+
+                var panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'), panoramaOptions);
+                _this.map.setStreetView(panorama);
+            };
+            this.positionChanged = function (objectPosition) {
+                var latitude = objectPosition.Latitude;
+                var longitude = objectPosition.Longitude;
+
+                var latlng = new google.maps.LatLng(latitude, longitude);
+
+                _this.setMarker(objectPosition.RegNr, latlng);
+            };
+            this.getMarker = function (regNr) {
                 var markers = _this.positionDictionary.filter(function (d) {
-                    return d.id === id;
+                    return d.id === regNr;
                 });
                 if (markers.length === 0) {
                     var circleOptions = {
@@ -24,29 +49,33 @@
                         fillColor: '#FF0000',
                         fillOpacity: 0.35,
                         map: _this.map,
-                        center: position,
                         radius: 20
                     };
 
-                    // Add the circle for this city to the map.
                     var newMarker = new google.maps.Circle(circleOptions);
-
-                    _this.positionDictionary.push({
-                        id: id,
-                        marker: newMarker
+                    newMarker.addListener('click', function () {
+                        var position = newMarker.getCenter();
+                        _this.onClick(newMarker.getCenter());
                     });
-                } else {
-                    var positionPair = markers[0];
-                    positionPair.marker.setCenter(position);
+                    var item = {
+                        id: regNr,
+                        marker: newMarker
+                    };
+                    _this.positionDictionary.push(item);
+                    return item;
                 }
+                var positionPair = markers[0];
+
+                return positionPair;
             };
-            this.positionChanged = function (objectPosition) {
-                var latitude = objectPosition.Latitude;
-                var longitude = objectPosition.Longitude;
+            this.statusChanged = function (taxiStatus) {
+                var marker = _this.getMarker(taxiStatus.RegNr);
 
-                var latlng = new google.maps.LatLng(latitude, longitude);
-
-                _this.setMarker(objectPosition.Id, latlng);
+                if (taxiStatus.GpsStatus === 0 /* inactive */) {
+                    marker.marker.set("fillColor", "#000000");
+                } else {
+                    marker.marker.set("fillColor", '#FF0000');
+                }
             };
             this.initMap();
         }
