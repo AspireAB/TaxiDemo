@@ -18,16 +18,7 @@
                 marker.marker.setCenter(position);
             };
             this.onClick = function (position) {
-                var panoramaOptions = {
-                    position: position,
-                    pov: {
-                        heading: 34,
-                        pitch: 10
-                    }
-                };
-
-                var panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'), panoramaOptions);
-                _this.map.setStreetView(panorama);
+                console.log(position);
             };
             this.positionChanged = function (objectPosition) {
                 var latitude = objectPosition.Latitude;
@@ -51,16 +42,17 @@
                         map: _this.map,
                         radius: 20
                     };
-
                     var newMarker = new google.maps.Circle(circleOptions);
-                    newMarker.addListener('click', function () {
-                        var position = newMarker.getCenter();
-                        _this.onClick(newMarker.getCenter());
-                    });
+
                     var item = {
                         id: regNr,
                         marker: newMarker
                     };
+
+                    newMarker.addListener('click', function () {
+                        return _this.onClick(item);
+                    });
+
                     _this.positionDictionary.push(item);
                     return item;
                 }

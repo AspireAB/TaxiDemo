@@ -1,13 +1,7 @@
-﻿using System;
-using System.Device.Location;
-using System.Threading;
-using Akka.Actor;
-using GpsSimulator;
-using Microsoft.AspNet.SignalR;
+﻿using Akka.Actor;
 using Taxi.Shared;
-using WebApplication2.Hubs;
 
-namespace WebApplication2
+namespace TaxiBackend
 {
    public class CoordinateGenerator
    {

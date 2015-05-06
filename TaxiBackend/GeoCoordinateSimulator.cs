@@ -1,12 +1,12 @@
 ﻿// GpsCoordinateSimulator.cs:
 // WPF: Requires reference to System.Device.dll
+
 using System;
 using System.Device.Location;
 using System.Timers;
 using System.Windows;
-using System.Windows.Threading;
 
-namespace GpsSimulator
+namespace TaxiBackend
 {
    /// <summary>
    /// GeoPositionWatcher for more accurately simulating a GPS,

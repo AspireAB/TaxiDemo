@@ -1,10 +1,7 @@
 ﻿module App {
    export class ChatClient {
       private map: google.maps.Map = null;
-      private positionDictionary: {
-         id: string;
-         marker: google.maps.Circle;
-      }[] = []
+      private positionDictionary: IPositionMarker[] = []
 
       constructor() {
          this.initMap();
@@ -26,17 +23,8 @@
 
       }
 
-      public onClick = (position: google.maps.LatLng) => {
-         var panoramaOptions = {
-            position: position,
-            pov: {
-               heading: 34,
-               pitch: 10
-            }
-         };
-
-         var panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'), panoramaOptions);
-         this.map.setStreetView(panorama);
+      public onClick = (position: IPositionMarker) => {
+         console.log(position);
       }
 
       public positionChanged = (objectPosition: IPositionChanged) => {
@@ -61,19 +49,17 @@
                fillOpacity: 0.35,
                map: this.map,
                radius: 20,
-               
+
             };
-
-
             var newMarker = new google.maps.Circle(circleOptions);
-            newMarker.addListener('click', () => {
-               var position = newMarker.getCenter();
-               this.onClick(newMarker.getCenter());
-            });
+
             var item = {
                id: regNr,
                marker: newMarker,
             };
+
+            newMarker.addListener('click', () => this.onClick(item));
+
             this.positionDictionary.push(item);
             return item;
          }
@@ -84,12 +70,17 @@
 
       public statusChanged = (taxiStatus: ITaxiStatus) => {
          var marker = this.getMarker(taxiStatus.RegNr);
-         
+
          if (taxiStatus.GpsStatus === GpsStatus.inactive) {
             marker.marker.set("fillColor", "#000000");
          } else {
             marker.marker.set("fillColor", '#FF0000');
          }
       }
+   }
+
+   export interface IPositionMarker {
+      id: string;
+      marker: google.maps.Circle;
    }
 }

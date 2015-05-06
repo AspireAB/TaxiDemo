@@ -14,4 +14,3 @@ C:\Users\JNORDIN\Source\Repos\TaxiDemo\TaxiHost\bin\Debug\Google.ProtocolBuffers
 C:\Users\JNORDIN\Source\Repos\TaxiDemo\TaxiHost\bin\Debug\Newtonsoft.Json.xml
 C:\Users\JNORDIN\Source\Repos\TaxiDemo\TaxiHost\obj\Debug\TaxiHost.exe
 C:\Users\JNORDIN\Source\Repos\TaxiDemo\TaxiHost\obj\Debug\TaxiHost.pdb
-C:\Users\JNORDIN\Source\Repos\TaxiDemo\TaxiHost\obj\Debug\TaxiHost.csprojResolveAssemblyReference.cache
