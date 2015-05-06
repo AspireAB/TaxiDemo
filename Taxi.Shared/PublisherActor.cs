@@ -49,11 +49,11 @@ namespace TaxiShared
             {
                 Console.WriteLine("Publisher started!");
                 _presenter = s.Presenter;
-                Become(Initialized);
+                Become(Active);
             });
         }
 
-        public void Initialized()
+        public void Active()
         {
             //remove actors that have died
             Receive<Terminated>(t =>
