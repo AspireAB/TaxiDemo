@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GpsPosition.cs" />
+    <Compile Include="PositionChanged.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxiActor.cs" />
   </ItemGroup>
