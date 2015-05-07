@@ -10,14 +10,13 @@ namespace WebApplication2
    {
       public SignalRActor()
       {
+         var chat = GlobalHost.ConnectionManager.GetHubContext<PositionHub>();
          Receive<Publisher.Position>(p =>
          {
-            var chat = GlobalHost.ConnectionManager.GetHubContext<PositionHub>();
             chat.Clients.All.positionChanged(p);
          });
          Receive<Taxi.Status>(status =>
          {
-            var chat = GlobalHost.ConnectionManager.GetHubContext<PositionHub>();
             chat.Clients.All.statusChanged(status);
          });
       }
