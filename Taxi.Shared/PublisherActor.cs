@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Akka.Actor;
+using Akka.Event;
 
 namespace TaxiShared
 {
@@ -35,6 +36,7 @@ namespace TaxiShared
     {
         private readonly Dictionary<string, IActorRef> _regNrToTaxiLookup;
         private IActorRef _presenter;
+        private ILoggingAdapter _log = Context.GetLogger();
 
         public PublisherActor()
         {
@@ -83,6 +85,7 @@ namespace TaxiShared
                 var taxiCarActor = Context.ActorOf(Props.Create(() =>
                     new TaxiActor(_presenter, regNr)));
                 _regNrToTaxiLookup.Add(regNr, taxiCarActor);
+                _log.Info("Creating new Taxi {0}",regNr);
             }
         }
     }

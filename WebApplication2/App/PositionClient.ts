@@ -10,7 +10,7 @@
       public initMap = () => {
          var mapOptions = <google.maps.MapOptions>{
             zoom: 13,
-            center: new google.maps.LatLng(59.273525, 15.212679)
+            center: new google.maps.LatLng(34.049678, -118.259469) //"Latitude":34.049678,"Longitude":-118.259469
          };
          this.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
       }

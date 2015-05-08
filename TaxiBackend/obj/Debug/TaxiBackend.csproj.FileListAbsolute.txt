@@ -17,3 +17,5 @@ C:\Projects\Git\TaxiDemo\TaxiBackend\obj\Debug\TaxiBackend.exe
 C:\Projects\Git\TaxiDemo\TaxiBackend\obj\Debug\TaxiBackend.pdb
 C:\Projects\Git\TaxiDemo\TaxiBackend\bin\Debug\TaxiShared.dll
 C:\Projects\Git\TaxiDemo\TaxiBackend\bin\Debug\TaxiShared.pdb
+C:\Projects\Git\TaxiDemo\TaxiBackend\bin\Debug\RestSharp.dll
+C:\Projects\Git\TaxiDemo\TaxiBackend\bin\Debug\RestSharp.xml

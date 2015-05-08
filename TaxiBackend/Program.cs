@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 using Akka.Actor;
+using Newtonsoft.Json;
 using TaxiShared;
 
 namespace TaxiBackend
@@ -11,10 +15,57 @@ namespace TaxiBackend
             using (var system = ActorSystem.Create("TaxiBackend"))
             {
                 var publisher = system.ActorOf(Props.Create(() => new PublisherActor()), "publisher");
-                CoordinateGenerator.CreateSimulators(publisher);
+                dynamic regions = GetJson("http://ladotbus.com/Regions");
+                foreach (var region in regions)
+                {
+                    var routes = GetJson("http://ladotbus.com/Region/" + region.ID + "/Routes");
+                    foreach (var route in routes)
+                    {
+                        RunFetchLoopAsync(publisher, "http://ladotbus.com/Route/" + route.ID + "/Vehicles/");
+                    }
+                }
 
                 Console.ReadLine();
             }
+        }
+
+        private static async void RunFetchLoopAsync(IActorRef publisher, string url)
+        {
+            await Task.Yield();
+            try
+            {
+                var c = new WebClient();
+                while (true)
+                {
+                    var data = await c.DownloadDataTaskAsync(new Uri(url));
+                    var str = Encoding.UTF8.GetString(data);
+
+                    dynamic res = JsonConvert.DeserializeObject(str);
+                    foreach (var bus in res)
+                    {
+                        string id = bus.ID;
+                        double lat = bus.Latitude;
+                        double lon = bus.Longitude;
+
+                        publisher.Tell(new Publisher.Position(lon, lat, id));
+                    }
+                    await Task.Delay(TimeSpan.FromSeconds(1));
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Missing Route {0}", url);
+            }
+        }
+
+        private static dynamic GetJson(string url)
+        {
+            var c = new WebClient();
+            var data = c.DownloadData(new Uri(url));
+            var str = Encoding.UTF8.GetString(data);
+
+            dynamic res = JsonConvert.DeserializeObject(str);
+            return res;
         }
     }
 }

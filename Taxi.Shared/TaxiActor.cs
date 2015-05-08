@@ -85,7 +85,7 @@ namespace TaxiShared
                 _idleTimer.Cancel();
 
             _idleTimer = Context.System.Scheduler
-                .ScheduleTellOnceCancelable(TimeSpan.FromSeconds(1), Self, new Taxi.Idle(), Self);
+                .ScheduleTellOnceCancelable(TimeSpan.FromMinutes(1), Self, new Taxi.Idle(), Self);
         }
     }
 
