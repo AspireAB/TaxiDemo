@@ -86,6 +86,7 @@ namespace TaxiShared
                     new TaxiActor(_presenter, regNr)));
                 _regNrToTaxiLookup.Add(regNr, taxiCarActor);
                 _log.Info("Creating new Taxi {0}",regNr);
+                _log.Info("Tracking {0} objects",_regNrToTaxiLookup.Count);
             }
         }
     }

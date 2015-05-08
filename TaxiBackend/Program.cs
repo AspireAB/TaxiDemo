@@ -12,6 +12,7 @@ namespace TaxiBackend
     {
         private static void Main(string[] args)
         {
+            System.Net.ServicePointManager.DefaultConnectionLimit = 500;
             using (var system = ActorSystem.Create("TaxiBackend"))
             {
                 var publisher = system.ActorOf(Props.Create(() => new PublisherActor()), "publisher");
@@ -19,6 +20,9 @@ namespace TaxiBackend
                 foreach (var region in regions)
                 {
                     var routes = GetJson("http://ladotbus.com/Region/" + region.ID + "/Routes");
+                    if (routes == null)
+                        continue;
+                    
                     foreach (var route in routes)
                     {
                         RunFetchLoopAsync(publisher, "http://ladotbus.com/Route/" + route.ID + "/Vehicles/");
@@ -49,7 +53,6 @@ namespace TaxiBackend
 
                         publisher.Tell(new Publisher.Position(lon, lat, id));
                     }
-                    await Task.Delay(TimeSpan.FromSeconds(1));
                 }
             }
             catch
@@ -60,12 +63,19 @@ namespace TaxiBackend
 
         private static dynamic GetJson(string url)
         {
-            var c = new WebClient();
-            var data = c.DownloadData(new Uri(url));
-            var str = Encoding.UTF8.GetString(data);
+            try
+            {
+                var c = new WebClient();
+                var data = c.DownloadData(new Uri(url));
+                var str = Encoding.UTF8.GetString(data);
 
-            dynamic res = JsonConvert.DeserializeObject(str);
-            return res;
+                dynamic res = JsonConvert.DeserializeObject(str);
+                return res;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }
