@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Akka.Actor;
@@ -84,7 +83,7 @@ namespace TaxiShared
             _signalR = signalR;
             _regNr = regNr;
 
-            Become(Active);
+            Become(Inactive);
         }
 
         public void Active()
@@ -95,21 +94,25 @@ namespace TaxiShared
 
             Receive<Taxi.Position>(p =>
             {
-                _positions.Enqueue(p);
-                if (_positions.Count > 10)
+                RememberPosition(p);
+                if (_positions.All(p2 => p2 == p))
                 {
-                    _positions.Dequeue();
-
-                    if (_positions.All(p2 => p2 == p))
-                    {
-                        Become(Parked);
-                    }
+                    Become(Parked);
                 }
 
                 ScheduleIdleTimer();
 
                 _signalR.Tell(new Publisher.Position(p.Longitude, p.Latitude, _regNr));
             });
+        }
+
+        private void RememberPosition(Taxi.Position p)
+        {
+            _positions.Enqueue(p);
+            if (_positions.Count > 10)
+            {
+                _positions.Dequeue();
+            }
         }
 
         private void ReceiveIdle()
@@ -127,15 +130,10 @@ namespace TaxiShared
 
             Receive<Taxi.Position>(p =>
             {
-                _positions.Enqueue(p);
-                if (_positions.Count > 10)
+                RememberPosition(p);
+                if (_positions.Any(p2 => p2 != p))
                 {
-                    _positions.Dequeue();
-
-                    if (_positions.Any(p2 => p2 != p))
-                    {
-                        Become(Active);
-                    }
+                    Become(Active);
                 }
 
                 ScheduleIdleTimer();
@@ -152,7 +150,6 @@ namespace TaxiShared
             {
                 Become(Active);
                 
-
                 //we are waking up from a period of silence
                 _positions.Clear();
 
