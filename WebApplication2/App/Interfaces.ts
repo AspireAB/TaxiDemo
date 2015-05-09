@@ -25,11 +25,14 @@
       parked = 2,
    }
 }
-
+declare var ko: {
+    track: (Function) => void;
+    applyBindings: (Function) => void;
+}
 declare var $: {
    connection: {
       positionHub: {
-         client: App.ChatClient;
+         client: App.PositionClient;
          server: App.IChatServer
       };
       hub: { start: any; }

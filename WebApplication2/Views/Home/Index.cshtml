@@ -4,27 +4,42 @@
    <title>I am a taxi driver man!</title>
    <style>
       html, body, #map-canvas {
-         height: 100%;
+         height: 90%;
          margin: 0px;
          padding: 0px;
       }
+      #vehicles{
+
+      }
    </style>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <script src="~/Scripts/jquery-1.6.4.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script src="~/Scripts/knockout-3.3.0.js"></script>
+    <script src="~/Scripts/knockout-es5.js"></script>
+    <script src="~/App/MovingVehicle.js"></script>
+    <script src="~/App/PositionClient.js"></script>
+    <script src="~/App/Interfaces.js"></script>
+    <script src="~/App/App.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    <script type="text/javascript">
+    var app = new App.Application();
+
+    $(function () {
+        app.init();
+        ko.applyBindings(app, document.body);
+    });
+    </script>
 
 </head>
 <body>
- <script src="~/Scripts/jquery-1.6.4.min.js"></script>
-   <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
-   <script src="~/signalr/hubs"></script>
-   <script src="~/App/PositionClient.js"></script>
-   <script src="~/App/App.js"></script>
-
-   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
-   
-   <script type="text/javascript">
-      $(function () {
-         var app = new App.Application();
-      });
-   </script>
    <div id="map-canvas"></div>
+    <div data-bind="with: client">
+        <div id="vehicles" data-bind="foreach: positionDictionary">
+            <button class="btn" data-bind="text: id, click: onClick, css: {'btn-success': isActive, 'btn-danger': isInactive, 'btn-info': isParked}"></button>
+        </div>
+    </div>
+    
 </body>
 </html>

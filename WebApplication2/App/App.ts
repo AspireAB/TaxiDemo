@@ -1,17 +1,21 @@
 ﻿module App {
-   export class Application {
-      private server: IChatServer;
+    export class Application {
+        private server: IChatServer;
+        private client: PositionClient;
+        constructor() {
 
-      constructor() {
+            this.client = new PositionClient()
+            ko.track(this);
+        }
 
-         this.server = $.connection.positionHub.server;
+        public init = () => {
+            this.server = $.connection.positionHub.server;
 
-         $.connection.positionHub.client = new ChatClient();
+            $.connection.positionHub.client = this.client;
 
-         $.connection.hub.start().done(this.init);
-      }
+            $.connection.hub.start();
 
-       public init = () => {
-      }
+            this.client.initMap();
+        }
     }
 }

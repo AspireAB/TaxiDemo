@@ -1,83 +1,43 @@
-﻿var App;
+var App;
 (function (App) {
-    var ChatClient = (function () {
-        function ChatClient() {
+    var PositionClient = (function () {
+        function PositionClient() {
             var _this = this;
             this.map = null;
             this.positionDictionary = [];
             this.initMap = function () {
                 var mapOptions = {
                     zoom: 13,
-                    center: new google.maps.LatLng(34.049678, -118.259469)
+                    center: new google.maps.LatLng(34.049678, -118.259469) //"Latitude":34.049678,"Longitude":-118.259469
                 };
                 _this.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
             };
             this.setMarker = function (regNr, position) {
-                var marker = _this.getMarker(regNr);
-
-                marker.marker.setCenter(position);
+                var vehicle = _this.getVehicle(regNr);
+                vehicle.setPosition(position);
             };
-            this.onClick = function (position) {
-                console.log(position);
+            this.positionChanged = function (position) {
+                var latlng = new google.maps.LatLng(position.Latitude, position.Longitude);
+                _this.setMarker(position.RegNr, latlng);
             };
-            this.positionChanged = function (objectPosition) {
-                var latitude = objectPosition.Latitude;
-                var longitude = objectPosition.Longitude;
-
-                var latlng = new google.maps.LatLng(latitude, longitude);
-
-                _this.setMarker(objectPosition.RegNr, latlng);
-            };
-            this.getMarker = function (regNr) {
-                var markers = _this.positionDictionary.filter(function (d) {
-                    return d.id === regNr;
-                });
+            this.getVehicle = function (regNr) {
+                var markers = _this.positionDictionary.filter(function (d) { return d.id === regNr; });
                 if (markers.length === 0) {
-                    var circleOptions = {
-                        strokeColor: '#FF00FF',
-                        strokeOpacity: 0.8,
-                        strokeWeight: 2,
-                        fillColor: '#FF00FF',
-                        fillOpacity: 0.35,
-                        map: _this.map,
-                        radius: 20
-                    };
-                    var newMarker = new google.maps.Circle(circleOptions);
-
-                    var item = {
-                        id: regNr,
-                        marker: newMarker
-                    };
-
-                    newMarker.addListener('click', function () {
-                        return _this.onClick(item);
-                    });
-
+                    var item = new App.MovingVehicle(regNr, _this.map);
                     _this.positionDictionary.push(item);
                     return item;
                 }
                 var positionPair = markers[0];
-
                 return positionPair;
             };
             this.statusChanged = function (taxiStatus) {
-                var marker = _this.getMarker(taxiStatus.RegNr);
-
-                if (taxiStatus.GpsStatus === 0 /* inactive */) {
-                    marker.marker.set("fillColor", "#000000");
-                    marker.marker.set("strokeColor", "#000000");
-                } else if (taxiStatus.GpsStatus === 2 /* parked */) {
-                    marker.marker.set("fillColor", "#FF0000");
-                    marker.marker.set("strokeColor", "#FF0000");
-                } else {
-                    marker.marker.set("fillColor", '#00FF00');
-                    marker.marker.set("strokeColor", "#00FF00");
-                }
+                var vehicle = _this.getVehicle(taxiStatus.RegNr);
+                vehicle.setStatus(taxiStatus.GpsStatus);
             };
-            this.initMap();
+            ko.track(this);
         }
-        return ChatClient;
+        return PositionClient;
     })();
-    App.ChatClient = ChatClient;
+    App.PositionClient = PositionClient;
 })(App || (App = {}));
 //# sourceMappingURL=PositionClient.js.map

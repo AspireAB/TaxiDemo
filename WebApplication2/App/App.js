@@ -1,14 +1,16 @@
-﻿var App;
+var App;
 (function (App) {
     var Application = (function () {
         function Application() {
+            var _this = this;
             this.init = function () {
+                _this.server = $.connection.positionHub.server;
+                $.connection.positionHub.client = _this.client;
+                $.connection.hub.start();
+                _this.client.initMap();
             };
-            this.server = $.connection.positionHub.server;
-
-            $.connection.positionHub.client = new App.ChatClient();
-
-            $.connection.hub.start().done(this.init);
+            this.client = new App.PositionClient();
+            ko.track(this);
         }
         return Application;
     })();

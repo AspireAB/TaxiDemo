@@ -1,4 +1,4 @@
-﻿var App;
+var App;
 (function (App) {
     (function (GpsStatus) {
         GpsStatus[GpsStatus["inactive"] = 0] = "inactive";
