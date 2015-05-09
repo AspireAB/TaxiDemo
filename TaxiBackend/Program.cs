@@ -25,6 +25,8 @@ namespace TaxiBackend
                     
                     foreach (var route in routes)
                     {
+
+                        Console.WriteLine("Found route {0}",route.ID);
                         RunFetchLoopAsync(publisher, "http://ladotbus.com/Route/" + route.ID + "/Vehicles/");
                     }
                 }
@@ -43,16 +45,20 @@ namespace TaxiBackend
                 {
                     var data = await c.DownloadDataTaskAsync(new Uri(url));
                     var str = Encoding.UTF8.GetString(data);
-
                     dynamic res = JsonConvert.DeserializeObject(str);
+                    Console.WriteLine("Downloaded {0}",url);
+
                     foreach (var bus in res)
                     {
                         string id = bus.ID;
                         double lat = bus.Latitude;
                         double lon = bus.Longitude;
 
-                        publisher.Tell(new Publisher.Position(lon, lat, id));
+                        publisher.Tell(new Publisher.Position(lon, lat, id));                    
                     }
+
+                    //how long should we wait before polling again?
+                    await Task.Delay(TimeSpan.FromSeconds(1));
                 }
             }
             catch
