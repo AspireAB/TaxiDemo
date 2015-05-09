@@ -21,7 +21,8 @@
    }
    export enum GpsStatus {
       inactive = 0,
-      active = 1
+      active = 1,
+      parked = 2,
    }
 }
 

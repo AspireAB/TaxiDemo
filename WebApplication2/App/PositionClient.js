@@ -34,10 +34,10 @@
                 });
                 if (markers.length === 0) {
                     var circleOptions = {
-                        strokeColor: '#FF0000',
+                        strokeColor: '#FF00FF',
                         strokeOpacity: 0.8,
                         strokeWeight: 2,
-                        fillColor: '#FF0000',
+                        fillColor: '#FF00FF',
                         fillOpacity: 0.35,
                         map: _this.map,
                         radius: 20
@@ -65,8 +65,13 @@
 
                 if (taxiStatus.GpsStatus === 0 /* inactive */) {
                     marker.marker.set("fillColor", "#000000");
+                    marker.marker.set("strokeColor", "#000000");
+                } else if (taxiStatus.GpsStatus === 2 /* parked */) {
+                    marker.marker.set("fillColor", "#FF0000");
+                    marker.marker.set("strokeColor", "#FF0000");
                 } else {
-                    marker.marker.set("fillColor", '#FF0000');
+                    marker.marker.set("fillColor", '#00FF00');
+                    marker.marker.set("strokeColor", "#00FF00");
                 }
             };
             this.initMap();

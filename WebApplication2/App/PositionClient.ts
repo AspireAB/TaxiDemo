@@ -42,10 +42,10 @@
          var markers = this.positionDictionary.filter(d => d.id === regNr);
          if (markers.length === 0) {
             var circleOptions = <google.maps.CircleOptions>{
-               strokeColor: '#FF0000',
+               strokeColor: '#FF00FF',
                strokeOpacity: 0.8,
                strokeWeight: 2,
-               fillColor: '#FF0000',
+               fillColor: '#FF00FF',
                fillOpacity: 0.35,
                map: this.map,
                radius: 20,
@@ -71,11 +71,16 @@
       public statusChanged = (taxiStatus: ITaxiStatus) => {
          var marker = this.getMarker(taxiStatus.RegNr);
 
-         if (taxiStatus.GpsStatus === GpsStatus.inactive) {
-            marker.marker.set("fillColor", "#000000");
-         } else {
-            marker.marker.set("fillColor", '#FF0000');
-         }
+          if (taxiStatus.GpsStatus === GpsStatus.inactive) {
+              marker.marker.set("fillColor", "#000000");
+              marker.marker.set("strokeColor", "#000000");
+          } else if (taxiStatus.GpsStatus === GpsStatus.parked) {
+              marker.marker.set("fillColor", "#FF0000");
+              marker.marker.set("strokeColor", "#FF0000");
+          } else {
+              marker.marker.set("fillColor", '#00FF00');
+              marker.marker.set("strokeColor", "#00FF00");
+          }
       }
    }
 
