@@ -46,7 +46,7 @@ namespace TaxiBackend
                     var data = await c.DownloadDataTaskAsync(new Uri(url));
                     var str = Encoding.UTF8.GetString(data);
                     dynamic res = JsonConvert.DeserializeObject(str);
-                    Console.WriteLine("Downloaded {0}",url);
+                 //   Console.WriteLine("Downloaded {0}",url);
 
                     foreach (var bus in res)
                     {

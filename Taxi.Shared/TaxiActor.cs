@@ -83,10 +83,10 @@ namespace TaxiShared
             _signalR = signalR;
             _regNr = regNr;
 
-            Become(Inactive);
+            Become(Disconnected);
         }
 
-        public void Active()
+        public void Driving()
         {
             _signalR.Tell(new Taxi.Status(GpsStatus.Active, _regNr));
 
@@ -118,7 +118,7 @@ namespace TaxiShared
         private void ReceiveIdle()
         {
             Receive<Taxi.Idle>(_ => {
-                Become(Inactive);
+                Become(Disconnected);
             });
         }
 
@@ -133,7 +133,7 @@ namespace TaxiShared
                 RememberPosition(p);
                 if (_positions.Any(p2 => p2 != p))
                 {
-                    Become(Active);
+                    Become(Driving);
                 }
 
                 ScheduleIdleTimer();
@@ -142,13 +142,13 @@ namespace TaxiShared
             });
         }
 
-        public void Inactive()
+        public void Disconnected()
         {
             _signalR.Tell(new Taxi.Status(GpsStatus.Inactive, _regNr));
 
             Receive<Taxi.Position>(p =>
             {
-                Become(Active);
+                Become(Driving);
                 
                 //we are waking up from a period of silence
                 _positions.Clear();
