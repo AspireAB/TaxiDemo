@@ -45,13 +45,19 @@
             this.status = status;
             switch (status) {
                 case GpsStatus.active:
-                    this.setColor("#00FF00");
+                    this.icon.fillColor = "#00FF00";
+                    this.icon.path = google.maps.SymbolPath.FORWARD_CLOSED_ARROW;
+                    this.marker.set("icon", this.icon);
                     break;
                 case GpsStatus.inactive:
-                    this.setColor("#FF0000");
+                    this.icon.fillColor = "#FF0000";
+                    this.icon.path = google.maps.SymbolPath.CIRCLE;
+                    this.marker.set("icon", this.icon);
                     break;
                 case GpsStatus.parked:
-                    this.setColor("#0000FF");
+                    this.icon.fillColor = "#0000FF";
+                    this.icon.path = google.maps.SymbolPath.CIRCLE;
+                    this.marker.set("icon", this.icon);
                     break;
             }
         }
