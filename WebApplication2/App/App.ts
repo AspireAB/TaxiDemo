@@ -5,7 +5,7 @@
         constructor() {
 
             this.client = new PositionClient()
-            ko.track(this);
+            track(this);
         }
 
         public init = () => {

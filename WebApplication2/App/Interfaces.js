@@ -6,5 +6,9 @@ var App;
         GpsStatus[GpsStatus["parked"] = 2] = "parked";
     })(App.GpsStatus || (App.GpsStatus = {}));
     var GpsStatus = App.GpsStatus;
+    function track(object) {
+        ko.track(object);
+    }
+    App.track = track;
 })(App || (App = {}));
 //# sourceMappingURL=Interfaces.js.map

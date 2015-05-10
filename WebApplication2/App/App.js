@@ -10,7 +10,7 @@ var App;
                 _this.client.initMap();
             };
             this.client = new App.PositionClient();
-            ko.track(this);
+            App.track(this);
         }
         return Application;
     })();

@@ -4,13 +4,22 @@
    <title>I am a taxi driver man!</title>
    <style>
       html, body, #map-canvas {
-         height: 90%;
+         height: 100%;
          margin: 0px;
          padding: 0px;
       }
-      #vehicles{
-
-      }
+       #vehicles {
+           position: absolute;
+           top: 0;
+           right: 0;
+           height: 100%;
+           margin-bottom: 0;
+           overflow-y: scroll;
+           width: 200px;
+       }
+       #vehicles ul{
+           opacity: 1;
+       }
    </style>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
     <script src="~/Scripts/jquery-1.6.4.min.js"></script>
@@ -35,11 +44,60 @@
 </head>
 <body>
    <div id="map-canvas"></div>
-    <div data-bind="with: client">
-        <div id="vehicles" data-bind="foreach: positionDictionary">
-            <button class="btn" data-bind="text: id, click: onClick, css: {'btn-success': isActive, 'btn-danger': isInactive, 'btn-info': isParked}"></button>
+    <div id="vehicles" data-bind="with: client" class="panel panel-default">
+        <div class="input-group">
+            <input type="text" data-bind="value: searchText, valueUpdate: 'input'" class="form-control" placeholder="Search for...">
         </div>
+        <div class="btn-group btn-group-justified" role="group">
+            <div class="btn-group" role="group"><button class="btn btn-default" data-bind="
+    css: {'btn-success': isIncluded(App.GpsStatus.active) },
+    click: function() { toggleStatus(App.GpsStatus.active);}">
+    <span class="glyphicon glyphicon-ok-circle"></span>
+</button>     
+            </div>
+            <div class="btn-group" role="group"><button class="btn btn-default" data-bind="
+    css: {'btn-success': isIncluded(App.GpsStatus.inactive) },
+    click: function() { toggleStatus(App.GpsStatus.inactive);}">
+    <span class="glyphicon glyphicon-ban-circle"></span>
+</button>  
+            </div>
+            <div class="btn-group" role="group"><button class="btn btn-default" data-bind="
+    css: {'btn-success': isIncluded(App.GpsStatus.parked) },
+    click: function() { toggleStatus(App.GpsStatus.parked);}">
+    <span class="glyphicon glyphicon-remove-circle"></span>
+</button> 
+            </div>
+            <div class="btn-group" role="group"><button class="btn btn-default" data-bind="
+    css: {'btn-success': isIncluded(null) },
+    click: function() { toggleStatus(null);}">
+    <span class="glyphicon glyphicon-eye-close"></span>
+</button>    
+            </div>
+        </div>
+        <ul data-bind="foreach: orderedVehicles" class="nav nav-pills nav-stacked">
+            <li>
+                <a href="" data-bind="click: onClick">
+                    <span data-bind="text: id"></span>
+                    <span class="glyphicon pull-right" aria-hidden="true" data-bind="css: {
+    'glyphicon-ok-circle text-success': isActive,
+    'glyphicon-ban-circle text-danger': isInactive,
+    'glyphicon-remove-circle text-muted': isParked,
+    'glyphicon-eye-close text-muted': isNoState
+}"></span>
+                </a>
+
+            </li>
+            <li data-bind="if: expanded">
+                <button class="btn btn-default" data-bind="click: toggleDrawLine">
+                    <span class="glyphicon glyphicon-screenshot" data-bind="css: { 'text-success': drawingLine, 'text-danger': drawingLine === false }"></span>
+                    Track
+                </button>
+                <button class="btn btn-default" data-bind="click: toggleShowInfo">
+                    <span class="glyphicon glyphicon-map-marker" data-bind="css: { 'text-success': showingInfo, 'text-danger': showingInfo === false }"></span>
+                    Show
+                </button>
+            </li>
+        </ul>
     </div>
-    
 </body>
 </html>
