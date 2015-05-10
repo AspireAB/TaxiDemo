@@ -19,6 +19,7 @@ namespace TaxiBackend
             {
                 var publisher = system.ActorOf(Props.Create(() => new PublisherActor()), "publisher");
 
+                RunBar(publisher);
             //    publisher.Tell(new Publisher.Initialize(ActorRefs.Nobody));
  
              //   RunSL(publisher);
@@ -27,7 +28,7 @@ namespace TaxiBackend
 
                 RunLondon(publisher);
 
-             //   RunFoo(publisher);
+                RunFoo(publisher);
 
                 RunGöteborg(publisher);
 
@@ -48,10 +49,50 @@ namespace TaxiBackend
                 }
                 await Task.Delay(TimeSpan.FromSeconds(1));
             }
-            
-
-
         }
+
+        private static void RunBar(IActorRef publisher)
+        {
+            for (int i = 0; i < 500; i++)
+            {
+                RunBar(publisher,i);
+            }
+        }
+        private static async void RunBar(IActorRef publisher,int agencyId)
+        {
+            await Task.Yield();
+            try
+            {
+                var url = "http://feeds.transloc.com/3/vehicle_statuses.jsonp?agencies=" + agencyId;
+                var c = new WebClient();
+                while (true)
+                {
+                    var data = await c.DownloadDataTaskAsync(new Uri(url));
+                    var str = Encoding.UTF8.GetString(data);
+                    str = str.Substring(6, str.Length - 8);
+                    dynamic res = JsonConvert.DeserializeObject(str);
+
+                    foreach (var bus in res.vehicles)
+                    {
+                        string id = "transloc" + agencyId + "-" + bus.id;
+                        double lat = bus.position[0];
+                        double lon = bus.position[1];
+
+
+                        publisher.Tell(new Publisher.Position(lon, lat, id));
+                    }
+
+                    //how long should we wait before polling again?
+                    await Task.Delay(TimeSpan.FromSeconds(1));
+                }
+            }
+            catch
+            {
+                
+            }
+        }
+
+        //http://feeds.transloc.com/3/routes.jsonp?agencies=116
 
         private static void RunLadotBus(IActorRef publisher)
         {
