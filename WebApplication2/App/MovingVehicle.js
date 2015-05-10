@@ -9,65 +9,71 @@ var App;
             this.setStatus = function (status) {
                 _this.status = status;
                 switch (status) {
-                    case 1 /* active */:
+                    case App.GpsStatus.active:
                         _this.setColor("#00FF00");
                         break;
-                    case 0 /* inactive */:
+                    case App.GpsStatus.inactive:
                         _this.setColor("#FF0000");
                         break;
-                    case 2 /* parked */:
+                    case App.GpsStatus.parked:
                         _this.setColor("#0000FF");
                         break;
                 }
             };
             this.setPosition = function (position) {
-                _this.marker.setCenter(position);
+                _this.marker.setPosition(position);
             };
             this.onClick = function () {
                 _this.map.panTo(_this.position);
                 console.log("Clicked: ", _this);
             };
             this.setColor = function (color) {
-                _this.marker.set("fillColor", color);
-                _this.marker.set("strokeColor", "#000000");
+                _this.icon.fillColor = color;
+                _this.marker.set("icon", _this.icon);
+                //this.marker.set("icon.fillColor", color);
+                //    this.marker.set("icon.fillColor", "#000000");
             };
-            var circleOptions = {
-                strokeColor: '#FF00FF',
-                strokeOpacity: 1,
-                strokeWeight: 2,
-                fillColor: '#FF00FF',
+            this.icon = {
+                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                scale: 4,
+                fillColor: "#ff5050",
                 fillOpacity: 1,
-                map: this.map,
-                radius: 20,
+                strokeWeight: 1,
+                rotation: 0 //this is how to rotate the pointer
             };
-            this.marker = new google.maps.Circle(circleOptions);
+            var markerOptions = {
+                map: this.map,
+                icon: this.icon,
+            };
+            this.marker = new google.maps.Marker(markerOptions);
             this.marker.addListener('click', this.onClick);
+            this.marker.setTitle(id);
             ko.track(this);
         }
         Object.defineProperty(MovingVehicle.prototype, "position", {
             get: function () {
-                return this.marker.getCenter();
+                return this.marker.getPosition();
             },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(MovingVehicle.prototype, "isActive", {
             get: function () {
-                return this.status === 1 /* active */;
+                return this.status === App.GpsStatus.active;
             },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(MovingVehicle.prototype, "isInactive", {
             get: function () {
-                return this.status === 0 /* inactive */;
+                return this.status === App.GpsStatus.inactive;
             },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(MovingVehicle.prototype, "isParked", {
             get: function () {
-                return this.status === 2 /* parked */;
+                return this.status === App.GpsStatus.parked;
             },
             enumerable: true,
             configurable: true

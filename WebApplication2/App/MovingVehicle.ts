@@ -1,26 +1,37 @@
 ﻿module App {
     export class MovingVehicle {
-        private marker: google.maps.Circle;
+        private marker: google.maps.Marker;
         private status: GpsStatus = null;
+        private icon: any;
         constructor(public id: string, private map: google.maps.Map) {
-            var circleOptions = <google.maps.CircleOptions>{
-                strokeColor: '#FF00FF',
-                strokeOpacity: 1,
-                strokeWeight: 2,
-                fillColor: '#FF00FF',
-                fillOpacity: 1,
-                map: this.map,
-                radius: 20,
-            };
-            this.marker = new google.maps.Circle(circleOptions);
 
-            this.marker.addListener('click',this.onClick);
+            this.icon = {
+                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                scale: 4,
+                fillColor: "#ff5050",
+                fillOpacity: 1,
+                strokeWeight: 1,
+                rotation: 0 //this is how to rotate the pointer
+            };
+
+            var markerOptions = <google.maps.MarkerOptions>{               
+                map: this.map,                
+                icon: this.icon,
+            };
+
+            
+                                 
+            this.marker = new google.maps.Marker(markerOptions);
+
+            this.marker.addListener('click', this.onClick);            
+
+            this.marker.setTitle(id);
 
             ko.track(this);
         }
 
         public get position() {
-            return this.marker.getCenter();
+            return this.marker.getPosition();
         }
 
         public setStatus = (status: GpsStatus) => {
@@ -51,7 +62,7 @@
         }
 
         public setPosition = (position: google.maps.LatLng) => {
-            this.marker.setCenter(position);
+            this.marker.setPosition(position);
         }
 
         public onClick = () => {
@@ -60,8 +71,10 @@
         }
 
         private setColor = (color: string) => {
-            this.marker.set("fillColor", color);
-            this.marker.set("strokeColor", "#000000");
+            this.icon.fillColor = color;
+            this.marker.set("icon", this.icon);
+            //this.marker.set("icon.fillColor", color);
+            //    this.marker.set("icon.fillColor", "#000000");
         }
     }
 }

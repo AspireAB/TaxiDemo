@@ -169,6 +169,40 @@ namespace TaxiShared
             _idleTimer = Context.System.Scheduler
                 .ScheduleTellOnceCancelable(TimeSpan.FromSeconds(7), Self, new Taxi.Idle(), Self);
         }
+
+        private double Bearing()
+        {
+            if (_positions.Count < 2)
+                return 0;
+
+            //TODO: this is not right but will do for now
+            return Bearing(_positions.FirstOrDefault(), _positions.Peek());
+        }
+
+        private static double Bearing(Taxi.Position from, Taxi.Position to)
+        {
+            var lat1 = from.Latitude;
+            var lon1 = from.Longitude;
+            var lat2 = to.Latitude;
+            var lon2 = to.Longitude;
+
+            var angle = -Math.Atan2(Math.Sin(lon1 - lon2) * Math.Cos(lat2), Math.Cos(lat1) * Math.Sin(lat2) - Math.Sin(lat1) * Math.Cos(lat2) * Math.Cos(lon1 - lon2));
+            if (angle < 0.0)
+                angle += Math.PI * 2.0;
+
+            if (Math.Abs(angle) < double.Epsilon*2)
+            {
+                angle = 1.5; 
+                
+            }
+
+            return RadianToDegree(angle);
+        }
+
+        private static double RadianToDegree(double angle)
+        {
+            return angle * (180.0 / Math.PI);
+        }
     }
 
     public enum GpsStatus
@@ -177,4 +211,20 @@ namespace TaxiShared
         Active = 1,
         Parked = 2,
     }
+
+    
 }
+
+//http://stackoverflow.com/questions/6800613/rotating-image-marker-image-on-google-map-v3
+/*
+ // Convert to radians.
+        var lat1 = from.latRadians();
+        var lon1 = from.lngRadians();
+        var lat2 = to.latRadians();
+        var lon2 = to.lngRadians();
+        // Compute the angle.
+        var angle = - Math.atan2( Math.sin( lon1 - lon2 ) * Math.cos( lat2 ), Math.cos( lat1 ) * Math.sin( lat2 ) - Math.sin( lat1 ) * Math.cos( lat2 ) * Math.cos( lon1 - lon2 ) );
+        if ( angle < 0.0 )
+            angle  += Math.PI * 2.0;
+        if (angle == 0) {angle=1.5;}
+*/
