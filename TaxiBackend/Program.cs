@@ -45,7 +45,7 @@ namespace TaxiBackend
             {
                 for (int i = 0; i < 1000; i++)
                 {
-                    publisher.Tell(new Publisher.Position(0, 0, "foo"));
+                    publisher.Tell(new Publisher.Position(0, 0, "foo", "Spam"));
                 }
                 await Task.Delay(TimeSpan.FromSeconds(1));
             }
@@ -53,6 +53,7 @@ namespace TaxiBackend
 
         private static void RunBar(IActorRef publisher)
         {
+
             for (int i = 0; i < 500; i++)
             {
                 RunBar(publisher,i);
@@ -79,7 +80,7 @@ namespace TaxiBackend
                         double lon = bus.position[1];
 
 
-                        publisher.Tell(new Publisher.Position(lon, lat, id));
+                        publisher.Tell(new Publisher.Position(lon, lat, id, "TransLoc" + agencyId));
                     }
 
                     //how long should we wait before polling again?
@@ -106,7 +107,7 @@ namespace TaxiBackend
                 foreach (var route in routes)
                 {
                     Console.WriteLine("Found route {0}", route.ID);
-                    RunFetchLoopAsync(publisher, "http://ladotbus.com/Route/" + route.ID + "/Vehicles/");
+                    RunFetchLoopAsync(publisher, "http://ladotbus.com/Route/" + route.ID + "/Vehicles/", "LAdot");
                 }
             }
         }
@@ -154,7 +155,7 @@ namespace TaxiBackend
                     double lat = bus.y / 1000000d;
                     double lon = bus.x / 1000000d;
 
-                    publisher.Tell(new Publisher.Position(lon, lat, id));
+                    publisher.Tell(new Publisher.Position(lon, lat, id, "Västtrafik"));
                 }
 
                 //how long should we wait before polling again?
@@ -185,7 +186,7 @@ namespace TaxiBackend
                         var lat = double.Parse(slat, NumberFormatInfo.InvariantInfo);
                         var lon = double.Parse(slon, NumberFormatInfo.InvariantInfo);
 
-                        publisher.Tell(new Publisher.Position(lon, lat, id));
+                        publisher.Tell(new Publisher.Position(lon, lat, id, "WaveTransit"));
                     }
                 }
                 catch
@@ -199,8 +200,6 @@ namespace TaxiBackend
 
         private static async void RunLondon(IActorRef publisher)
         {
-            
-
             var c = new WebClient();
             while (true)
             {
@@ -215,7 +214,7 @@ namespace TaxiBackend
                     double lat = bus.point[0];
                     double lon = bus.point[1];
 
-                    publisher.Tell(new Publisher.Position(lon, lat, id));
+                    publisher.Tell(new Publisher.Position(lon, lat, id, "London"));
                 }
 
                 //how long should we wait before polling again?
@@ -223,7 +222,7 @@ namespace TaxiBackend
             }
         }
 
-        private static async void RunFetchLoopAsync(IActorRef publisher, string url)
+        private static async void RunFetchLoopAsync(IActorRef publisher, string url, string source)
         {
             await Task.Yield();
             try
@@ -242,7 +241,7 @@ namespace TaxiBackend
                         double lat = bus.Latitude;
                         double lon = bus.Longitude;
 
-                        publisher.Tell(new Publisher.Position(lon, lat, id));                    
+                        publisher.Tell(new Publisher.Position(lon, lat, id, source));                    
                     }
 
                     //how long should we wait before polling again?

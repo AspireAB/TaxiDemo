@@ -13,11 +13,15 @@ namespace WebApplication2
          var chat = GlobalHost.ConnectionManager.GetHubContext<PositionHub>();
          Receive<Taxi.PositionBearing>(p =>
          {
-            chat.Clients.All.positionChanged(p);
+            chat.Clients.Group(p.Source).positionChanged(p);
          });
          Receive<Taxi.Status>(status =>
          {
-            chat.Clients.All.statusChanged(status);
+            chat.Clients.Group(status.Source).statusChanged(status);
+         });
+         Receive<Publisher.SourceAvailable>(s =>
+         {
+             chat.Clients.All.sourceAdded(s);
          });
       }
    }

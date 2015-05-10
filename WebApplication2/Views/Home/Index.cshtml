@@ -74,6 +74,12 @@
 </button>    
             </div>
         </div>
+        <ul data-bind="foreach: sources" class="nav nav-pills nav-stacked">
+            <li><a href="" data-bind="click: $parent.toggleSource">
+                <span data-bind="text: $data"></span>
+                    <span class="glyphicon pull-right" data-bind="css: { 'glyphicon-ok': $parent.isSourceJoined($data) === false, 'glyphicon-remove': $parent.isSourceJoined($data)  }"></span>
+            </a></li>
+        </ul>
         <ul data-bind="foreach: orderedVehicles" class="nav nav-pills nav-stacked">
             <li>
                 <a href="" data-bind="click: onClick">

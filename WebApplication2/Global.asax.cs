@@ -8,14 +8,16 @@ namespace WebApplication2
 {
     public class MvcApplication : HttpApplication
     {
-        private ActorSystem _system;
+        public static ActorSystem _system;
+        public static ActorSelection _publisher;
+        public static IActorRef _signalRactor;
 
         protected void Application_Start()
         {
             _system = ActorSystem.Create("TaxiSystem");
-            var signalRactor = _system.ActorOf(Props.Create(() => new SignalRActor()));
-            _system.ActorSelection("akka.tcp://TaxiBackend@localhost:8080/user/publisher")
-                .Tell(new Publisher.Initialize(signalRactor));
+            _signalRactor = _system.ActorOf(Props.Create(() => new SignalRActor()));
+            _publisher = _system.ActorSelection("akka.tcp://TaxiBackend@localhost:8080/user/publisher");
+            _publisher.Tell(new Publisher.Initialize(_signalRactor));
 
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);

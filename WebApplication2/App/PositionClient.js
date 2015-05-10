@@ -7,6 +7,11 @@ var App;
             this.vehicles = [];
             this.searchText = "";
             this.includedStateValues = [1 /* active */];
+            this.joinedSources = [];
+            this.sources = [];
+            this.initialize = function (sources) {
+                _this.sources = sources;
+            };
             this.toggleStatus = function (status) {
                 var index = _this.includedStateValues.indexOf(status);
                 if (index === -1) {
@@ -62,6 +67,27 @@ var App;
             this.statusChanged = function (taxiStatus) {
                 var vehicle = _this.getVehicle(taxiStatus.RegNr);
                 vehicle.setStatus(taxiStatus.GpsStatus);
+            };
+            this.sourceAdded = function (source) {
+                _this.sources.push(source);
+            };
+            this.toggleSource = function (source) {
+                var sourceIndex = _this.joinedSources.indexOf(source);
+                if (sourceIndex !== -1) {
+                    _this.leaveSource(source);
+                    _this.joinedSources.splice(sourceIndex, 1);
+                }
+                else {
+                    _this.joinSource(source);
+                    _this.joinedSources.unshift(source);
+                }
+            };
+            this.isSourceJoined = function (source) {
+                return _this.joinedSources.indexOf(source) !== -1;
+            };
+            this.joinSource = function (sourceName) {
+            };
+            this.leaveSource = function (sourceName) {
             };
             App.track(this);
         }

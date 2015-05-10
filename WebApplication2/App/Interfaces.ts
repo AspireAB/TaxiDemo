@@ -5,9 +5,18 @@
         Latitude: number;
         Longitude: number;
         Bearing: number;
+        Source: string;
     }
-    export interface IChatServer {
-
+    export interface IPositionServer {
+        init: () => void;
+        joinSource: (source: string) => void;
+        leaveSource: (source: string) => void;
+    }
+    export interface IPositionClient {
+        statusChanged: (taxiStatus: ITaxiStatus) => void;
+        positionChanged: (position: IPositionChanged) => void;
+        sourceAdded: (source: string) => void;
+        initialize: (sources: string[]) => void;
     }
     export interface IPosition {
         Location: {
@@ -38,7 +47,7 @@ declare var $: {
    connection: {
       positionHub: {
          client: App.PositionClient;
-         server: App.IChatServer
+         server: App.IPositionServer
       };
       hub: { start: any; }
    }

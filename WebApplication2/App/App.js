@@ -5,8 +5,10 @@ var App;
             var _this = this;
             this.init = function () {
                 _this.server = $.connection.positionHub.server;
+                _this.client.joinSource = _this.server.joinSource;
+                _this.client.leaveSource = _this.server.leaveSource;
                 $.connection.positionHub.client = _this.client;
-                $.connection.hub.start();
+                $.connection.hub.start().then(function () { return _this.server.init(); });
                 _this.client.initMap();
             };
             this.client = new App.PositionClient();

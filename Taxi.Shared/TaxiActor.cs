@@ -15,18 +15,21 @@ namespace TaxiShared
 
         public class PositionBearing
         {
-            public PositionBearing(double longitude, double latitude, double bearing, string regNr)
+            public PositionBearing(double longitude, double latitude, double bearing, string regNr, string source)
             {
                 Bearing = bearing;
                 Latitude = latitude;
                 Longitude = longitude;
                 RegNr = regNr;
+                Source = source;
             }
 
             public double Longitude { get; set; }
             public double Latitude { get; set; }
             public double Bearing { get; set; }
             public string RegNr { get; set; }
+            public string Source { get; set; }
+
         }
 
         public class Position : IEquatable<Position>
@@ -76,39 +79,42 @@ namespace TaxiShared
 
         public class Status
         {
-            public GpsStatus GpsStatus { get; set; }
-            public string RegNr { get; set; }
+            public GpsStatus GpsStatus { get; private set; }
+            public string RegNr { get; private set; }
+            public string Source { get; private set; }
 
-            public Status(GpsStatus gpsStatus, string regNr)
+
+            public Status(GpsStatus gpsStatus, string regNr, string source)
             {
                 GpsStatus = gpsStatus;
                 RegNr = regNr;
+                Source = source;
             }
         }
     }
 
-
-
     public class TaxiActor : ReceiveActor
     {
-        private readonly string _regNr;
+        private readonly string _id;
+        private readonly string _source;
         private readonly IActorRef _signalR;
         private ICancelable _idleTimer;
         private readonly Queue<Taxi.Position> _positions = new Queue<Taxi.Position>();
 
-        public TaxiActor(IActorRef signalR, string regNr)
+        public TaxiActor(IActorRef signalR, string id, string source)
         {
             //HACK: status kan inte sättas innan pos
          //   _signalR.Tell(new Publisher.Position(0,0, _regNr));
             _signalR = signalR;
-            _regNr = regNr;
+            _id = id;
+            _source = source;
 
             Become(Disconnected);
         }
 
         public void Driving()
         {
-            _signalR.Tell(new Taxi.Status(GpsStatus.Active, _regNr));
+            _signalR.Tell(new Taxi.Status(GpsStatus.Active, _id, _source));
 
             ReceiveIdle();
 
@@ -122,7 +128,7 @@ namespace TaxiShared
 
                 ScheduleIdleTimer();
 
-                _signalR.Tell(new Taxi.PositionBearing(p.Longitude, p.Latitude,Bearing(), _regNr));
+                _signalR.Tell(new Taxi.PositionBearing(p.Longitude, p.Latitude,Bearing(), _id, _source));
             });
         }
 
@@ -144,7 +150,7 @@ namespace TaxiShared
 
         public void Parked()
         {
-            _signalR.Tell(new Taxi.Status(GpsStatus.Parked, _regNr));
+            _signalR.Tell(new Taxi.Status(GpsStatus.Parked, _id, _source));
 
             ReceiveIdle();
 
@@ -158,13 +164,13 @@ namespace TaxiShared
 
                 ScheduleIdleTimer();
 
-                _signalR.Tell(new Taxi.PositionBearing(p.Longitude, p.Latitude,Bearing(), _regNr));
+                _signalR.Tell(new Taxi.PositionBearing(p.Longitude, p.Latitude,Bearing(), _id, _source));
             });
         }
 
         public void Disconnected()
         {
-            _signalR.Tell(new Taxi.Status(GpsStatus.Inactive, _regNr));
+            _signalR.Tell(new Taxi.Status(GpsStatus.Inactive, _id, _source));
 
             Receive<Taxi.Position>(p =>
             {
@@ -175,7 +181,7 @@ namespace TaxiShared
 
                 ScheduleIdleTimer();
 
-                _signalR.Tell(new Taxi.PositionBearing(p.Longitude, p.Latitude,Bearing(), _regNr));
+                _signalR.Tell(new Taxi.PositionBearing(p.Longitude, p.Latitude,Bearing(), _id, _source));
             });
         }
 
