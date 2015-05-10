@@ -80,6 +80,8 @@ namespace TaxiShared
 
         public TaxiActor(IActorRef signalR, string regNr)
         {
+            //HACK: status kan inte sättas innan pos
+         //   _signalR.Tell(new Publisher.Position(0,0, _regNr));
             _signalR = signalR;
             _regNr = regNr;
 
@@ -165,7 +167,7 @@ namespace TaxiShared
                 _idleTimer.Cancel();
 
             _idleTimer = Context.System.Scheduler
-                .ScheduleTellOnceCancelable(TimeSpan.FromMinutes(1), Self, new Taxi.Idle(), Self);
+                .ScheduleTellOnceCancelable(TimeSpan.FromSeconds(7), Self, new Taxi.Idle(), Self);
         }
     }
 

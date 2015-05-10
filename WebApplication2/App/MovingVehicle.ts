@@ -5,10 +5,10 @@
         constructor(public id: string, private map: google.maps.Map) {
             var circleOptions = <google.maps.CircleOptions>{
                 strokeColor: '#FF00FF',
-                strokeOpacity: 0.8,
+                strokeOpacity: 1,
                 strokeWeight: 2,
                 fillColor: '#FF00FF',
-                fillOpacity: 0.35,
+                fillOpacity: 1,
                 map: this.map,
                 radius: 20,
             };
@@ -30,10 +30,10 @@
                     this.setColor("#00FF00");
                     break;
                 case GpsStatus.inactive:
-                    this.setColor("#000000");
+                    this.setColor("#FF0000");
                     break;
                 case GpsStatus.parked:
-                    this.setColor("#FF0000");
+                    this.setColor("#0000FF");
                     break;
             }
         }
@@ -61,7 +61,7 @@
 
         private setColor = (color: string) => {
             this.marker.set("fillColor", color);
-            this.marker.set("strokeColor", color);
+            this.marker.set("strokeColor", "#000000");
         }
     }
 }
