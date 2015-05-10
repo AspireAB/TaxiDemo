@@ -6,7 +6,7 @@
         private icon: any;
 
         public status: GpsStatus = null;
-        private positions: PositionReport[] = []
+        private positions: PositionReport[] = [];
         private drawingLine: boolean = false;
         private showingInfo: boolean = false;
         private expanded: boolean = false;
@@ -79,7 +79,7 @@
         }
 
         public setPosition = (bearing: number, position: google.maps.LatLng) => {
-            this.positions.push(new PositionReport(position));
+         //   this.positions.push(new PositionReport(position));
             this.marker.setPosition(position);
             this.icon.rotation = bearing;
             this.marker.set("icon", this.icon);

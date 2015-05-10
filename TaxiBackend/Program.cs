@@ -19,7 +19,7 @@ namespace TaxiBackend
             {
                 var publisher = system.ActorOf(Props.Create(() => new PublisherActor()), "publisher");
 
-                RunBar(publisher);
+           //     RunBar(publisher);
             //    publisher.Tell(new Publisher.Initialize(ActorRefs.Nobody));
  
              //   RunSL(publisher);
@@ -168,22 +168,29 @@ namespace TaxiBackend
             var c = new WebClient();
             while (true)
             {
-                var data =
-                    await
-                        c.DownloadDataTaskAsync(
-                            new Uri("http://text90947.com/bustracking/wavetransit/m/businfo.jsp?refine=&iefix=82607"));
-                var str = Encoding.UTF8.GetString(data);
-                var doc = new XmlDocument();
-                doc.LoadXml(str);
-                foreach (XmlElement bus in doc["buses"].ChildNodes)
+                try
                 {
-                    var slat = bus["latitude"].InnerText;
-                    var slon = bus["longitude"].InnerText;
-                    var id = "foo" + bus["vehicleId"].InnerText;
-                    var lat = double.Parse(slat, NumberFormatInfo.InvariantInfo);
-                    var lon = double.Parse(slon, NumberFormatInfo.InvariantInfo);
+                    var data =
+                        await
+                            c.DownloadDataTaskAsync(
+                                new Uri("http://text90947.com/bustracking/wavetransit/m/businfo.jsp?refine=&iefix=82607"));
+                    var str = Encoding.UTF8.GetString(data);
+                    var doc = new XmlDocument();
+                    doc.LoadXml(str);
+                    foreach (XmlElement bus in doc["buses"].ChildNodes)
+                    {
+                        var slat = bus["latitude"].InnerText;
+                        var slon = bus["longitude"].InnerText;
+                        var id = "foo" + bus["vehicleId"].InnerText;
+                        var lat = double.Parse(slat, NumberFormatInfo.InvariantInfo);
+                        var lon = double.Parse(slon, NumberFormatInfo.InvariantInfo);
 
-                    publisher.Tell(new Publisher.Position(lon, lat, id));
+                        publisher.Tell(new Publisher.Position(lon, lat, id));
+                    }
+                }
+                catch
+                {
+                    
                 }
 
                 await Task.Delay(TimeSpan.FromSeconds(1));

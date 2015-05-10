@@ -31,7 +31,7 @@ var App;
                 }
             };
             this.setPosition = function (bearing, position) {
-                _this.positions.push(new PositionReport(position));
+                //   this.positions.push(new PositionReport(position));
                 _this.marker.setPosition(position);
                 _this.icon.rotation = bearing;
                 _this.marker.set("icon", _this.icon);
