@@ -28,6 +28,5 @@ C:\Projects\Git\TaxiDemo\TaxiHost\bin\Debug\Akka.Remote.xml
 C:\Projects\Git\TaxiDemo\TaxiHost\bin\Debug\Google.ProtocolBuffers.xml
 C:\Projects\Git\TaxiDemo\TaxiHost\bin\Debug\Google.ProtocolBuffers.Serialization.xml
 C:\Projects\Git\TaxiDemo\TaxiHost\bin\Debug\Newtonsoft.Json.xml
-C:\Projects\Git\TaxiDemo\TaxiHost\obj\Debug\TaxiHost.csprojResolveAssemblyReference.cache
 C:\Projects\Git\TaxiDemo\TaxiHost\obj\Debug\TaxiHost.exe
 C:\Projects\Git\TaxiDemo\TaxiHost\obj\Debug\TaxiHost.pdb

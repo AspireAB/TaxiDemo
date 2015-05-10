@@ -12,13 +12,14 @@ var App;
                 };
                 _this.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
             };
-            this.setMarker = function (regNr, position) {
+            this.setMarker = function (regNr, bearing, position) {
                 var vehicle = _this.getVehicle(regNr);
-                vehicle.setPosition(position);
+                vehicle.setPosition(bearing, position);
             };
             this.positionChanged = function (position) {
                 var latlng = new google.maps.LatLng(position.Latitude, position.Longitude);
-                _this.setMarker(position.RegNr, latlng);
+                var bearing = position.Bearing;
+                _this.setMarker(position.RegNr, bearing, latlng);
             };
             this.getVehicle = function (regNr) {
                 var markers = _this.positionDictionary.filter(function (d) { return d.id === regNr; });

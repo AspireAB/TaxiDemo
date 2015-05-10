@@ -19,3 +19,5 @@ C:\Projects\Git\TaxiDemo\TaxiBackend\bin\Debug\TaxiShared.dll
 C:\Projects\Git\TaxiDemo\TaxiBackend\bin\Debug\TaxiShared.pdb
 C:\Projects\Git\TaxiDemo\TaxiBackend\bin\Debug\RestSharp.dll
 C:\Projects\Git\TaxiDemo\TaxiBackend\bin\Debug\RestSharp.xml
+C:\Projects\Git\TaxiDemo\TaxiBackend\bin\Debug\NExtra.dll
+C:\Projects\Git\TaxiDemo\TaxiBackend\bin\Debug\NExtra.xml

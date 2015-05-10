@@ -9,19 +9,21 @@ var App;
             this.setStatus = function (status) {
                 _this.status = status;
                 switch (status) {
-                    case App.GpsStatus.active:
+                    case 1 /* active */:
                         _this.setColor("#00FF00");
                         break;
-                    case App.GpsStatus.inactive:
+                    case 0 /* inactive */:
                         _this.setColor("#FF0000");
                         break;
-                    case App.GpsStatus.parked:
+                    case 2 /* parked */:
                         _this.setColor("#0000FF");
                         break;
                 }
             };
-            this.setPosition = function (position) {
+            this.setPosition = function (bearing, position) {
                 _this.marker.setPosition(position);
+                _this.icon.rotation = bearing;
+                _this.marker.set("icon", _this.icon);
             };
             this.onClick = function () {
                 _this.map.panTo(_this.position);
@@ -59,21 +61,21 @@ var App;
         });
         Object.defineProperty(MovingVehicle.prototype, "isActive", {
             get: function () {
-                return this.status === App.GpsStatus.active;
+                return this.status === 1 /* active */;
             },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(MovingVehicle.prototype, "isInactive", {
             get: function () {
-                return this.status === App.GpsStatus.inactive;
+                return this.status === 0 /* inactive */;
             },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(MovingVehicle.prototype, "isParked", {
             get: function () {
-                return this.status === App.GpsStatus.parked;
+                return this.status === 2 /* parked */;
             },
             enumerable: true,
             configurable: true

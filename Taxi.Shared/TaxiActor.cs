@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using Akka.Actor;
+using NExtra.Geo;
 
 namespace TaxiShared
 {
@@ -9,6 +11,22 @@ namespace TaxiShared
     {
         public class Idle
         {
+        }
+
+        public class PositionBearing
+        {
+            public PositionBearing(double longitude, double latitude, double bearing, string regNr)
+            {
+                Bearing = bearing;
+                Latitude = latitude;
+                Longitude = longitude;
+                RegNr = regNr;
+            }
+
+            public double Longitude { get; set; }
+            public double Latitude { get; set; }
+            public double Bearing { get; set; }
+            public string RegNr { get; set; }
         }
 
         public class Position : IEquatable<Position>
@@ -104,7 +122,7 @@ namespace TaxiShared
 
                 ScheduleIdleTimer();
 
-                _signalR.Tell(new Publisher.Position(p.Longitude, p.Latitude, _regNr));
+                _signalR.Tell(new Taxi.PositionBearing(p.Longitude, p.Latitude,Bearing(), _regNr));
             });
         }
 
@@ -140,7 +158,7 @@ namespace TaxiShared
 
                 ScheduleIdleTimer();
 
-                _signalR.Tell(new Publisher.Position(p.Longitude, p.Latitude, _regNr));
+                _signalR.Tell(new Taxi.PositionBearing(p.Longitude, p.Latitude,Bearing(), _regNr));
             });
         }
 
@@ -156,8 +174,8 @@ namespace TaxiShared
                 _positions.Clear();
 
                 ScheduleIdleTimer();
-                
-                _signalR.Tell(new Publisher.Position(p.Longitude, p.Latitude, _regNr));
+
+                _signalR.Tell(new Taxi.PositionBearing(p.Longitude, p.Latitude,Bearing(), _regNr));
             });
         }
 
@@ -175,34 +193,14 @@ namespace TaxiShared
             if (_positions.Count < 2)
                 return 0;
 
-            //TODO: this is not right but will do for now
-            return Bearing(_positions.FirstOrDefault(), _positions.Peek());
+            var p2 = _positions.Last();
+            var p1 = _positions.First();
+            var c = new PositionBearingCalculator(new AngleConverter());
+            var bearing = c.CalculateBearing(new Position(p1.Latitude, p1.Longitude), new Position(p2.Latitude, p2.Longitude));
+            return bearing;
         }
 
-        private static double Bearing(Taxi.Position from, Taxi.Position to)
-        {
-            var lat1 = from.Latitude;
-            var lon1 = from.Longitude;
-            var lat2 = to.Latitude;
-            var lon2 = to.Longitude;
-
-            var angle = -Math.Atan2(Math.Sin(lon1 - lon2) * Math.Cos(lat2), Math.Cos(lat1) * Math.Sin(lat2) - Math.Sin(lat1) * Math.Cos(lat2) * Math.Cos(lon1 - lon2));
-            if (angle < 0.0)
-                angle += Math.PI * 2.0;
-
-            if (Math.Abs(angle) < double.Epsilon*2)
-            {
-                angle = 1.5; 
-                
-            }
-
-            return RadianToDegree(angle);
-        }
-
-        private static double RadianToDegree(double angle)
-        {
-            return angle * (180.0 / Math.PI);
-        }
+        
     }
 
     public enum GpsStatus

@@ -40,3 +40,5 @@ C:\Projects\Git\TaxiDemo\WebApplication2\bin\System.Web.Mvc.xml
 C:\Projects\Git\TaxiDemo\WebApplication2\obj\Debug\TaxiFrontend.csprojResolveAssemblyReference.cache
 C:\Projects\Git\TaxiDemo\WebApplication2\obj\Debug\WebApplication2.dll
 C:\Projects\Git\TaxiDemo\WebApplication2\obj\Debug\WebApplication2.pdb
+C:\Projects\Git\TaxiDemo\WebApplication2\bin\NExtra.dll
+C:\Projects\Git\TaxiDemo\WebApplication2\bin\NExtra.xml

@@ -61,8 +61,11 @@
             return this.status === GpsStatus.parked;
         }
 
-        public setPosition = (position: google.maps.LatLng) => {
+        public setPosition = (bearing: number, position: google.maps.LatLng) => {
+            
             this.marker.setPosition(position);
+            this.icon.rotation = bearing;
+            this.marker.set("icon", this.icon);
         }
 
         public onClick = () => {

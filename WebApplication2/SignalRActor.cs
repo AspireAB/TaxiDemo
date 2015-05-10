@@ -11,7 +11,7 @@ namespace WebApplication2
       public SignalRActor()
       {
          var chat = GlobalHost.ConnectionManager.GetHubContext<PositionHub>();
-         Receive<Publisher.Position>(p =>
+         Receive<Taxi.PositionBearing>(p =>
          {
             chat.Clients.All.positionChanged(p);
          });

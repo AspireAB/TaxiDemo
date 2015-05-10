@@ -15,15 +15,15 @@
          this.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
       }
 
-      public setMarker = (regNr: string, position: google.maps.LatLng) => {
+      public setMarker = (regNr: string,bearing:number, position: google.maps.LatLng) => {
          var vehicle = this.getVehicle(regNr);
-         vehicle.setPosition(position);
+         vehicle.setPosition(bearing,position);
       }
 
       public positionChanged = (position: IPositionChanged) => {
          var latlng = new google.maps.LatLng(position.Latitude, position.Longitude);
-
-         this.setMarker(position.RegNr, latlng);
+          var bearing = position.Bearing;
+         this.setMarker(position.RegNr, bearing, latlng);
       };
 
       public getVehicle = (regNr: string) => {

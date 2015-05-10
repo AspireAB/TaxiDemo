@@ -42,6 +42,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NExtra">
+      <HintPath>..\packages\NExtra.3.3.1.1\lib\net40\NExtra.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -51,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PositionCalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublisherActor.cs" />
     <Compile Include="TaxiActor.cs" />

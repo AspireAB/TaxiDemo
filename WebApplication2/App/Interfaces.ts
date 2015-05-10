@@ -4,6 +4,7 @@
       RegNr: string;
       Latitude: number;
       Longitude: number;
+      Bearing: number;
    }
    export interface IChatServer {
 
