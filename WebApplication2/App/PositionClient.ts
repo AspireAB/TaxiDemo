@@ -43,26 +43,23 @@
             center: new google.maps.LatLng(34.049678, -118.259469) //"Latitude":34.049678,"Longitude":-118.259469
          };
          this.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-         google.maps.event.addListener(this.map, 'idle',() => {
-             var lat0 = this.map.getBounds().getNorthEast().lat();
-             var lng0 = this.map.getBounds().getNorthEast().lng();
-             var lat1 = this.map.getBounds().getSouthWest().lat();
-             var lng1 = this.map.getBounds().getSouthWest().lng();
-             console.log("lat0:" + lat0 + " lng0:" + lng0 + "lat1:" + lat1 + " lng1:" + lng1);
-         });
-      }
-
-      public setMarker = (regNr: string, bearing: number, position: google.maps.LatLng) => {
-         var vehicle = this.getVehicle(regNr);
-         vehicle.setPosition(bearing, position);
+         //google.maps.event.addListener(this.map, 'idle',() => {
+         //    var lat0 = this.map.getBounds().getNorthEast().lat();
+         //    var lng0 = this.map.getBounds().getNorthEast().lng();
+         //    var lat1 = this.map.getBounds().getSouthWest().lat();
+         //    var lng1 = this.map.getBounds().getSouthWest().lng();
+         //    console.log("lat0:" + lat0 + " lng0:" + lng0 + "lat1:" + lat1 + " lng1:" + lng1);
+         //});
       }
 
       public positionChanged = (position: IPositionChanged) => {
          var latlng = new google.maps.LatLng(position.Latitude, position.Longitude);
 
-         this.setMarker(position.RegNr, position.Bearing, latlng);
+         var vehicle = this.getVehicle(position.RegNr);
+         vehicle.setPosition(position.Bearing, latlng);
       };
 
+      //TODO: use dictionary lookup
       public getVehicle = (regNr: string) => {
          var markers = this.vehicles.filter(d => d.id === regNr);
          if (markers.length === 0) {
