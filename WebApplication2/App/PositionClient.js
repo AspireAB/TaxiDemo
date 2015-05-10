@@ -33,6 +33,13 @@ var App;
                     center: new google.maps.LatLng(34.049678, -118.259469) //"Latitude":34.049678,"Longitude":-118.259469
                 };
                 _this.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+                google.maps.event.addListener(_this.map, 'idle', function () {
+                    var lat0 = _this.map.getBounds().getNorthEast().lat();
+                    var lng0 = _this.map.getBounds().getNorthEast().lng();
+                    var lat1 = _this.map.getBounds().getSouthWest().lat();
+                    var lng1 = _this.map.getBounds().getSouthWest().lng();
+                    console.log("lat0:" + lat0 + " lng0:" + lng0 + "lat1:" + lat1 + " lng1:" + lng1);
+                });
             };
             this.setMarker = function (regNr, bearing, position) {
                 var vehicle = _this.getVehicle(regNr);

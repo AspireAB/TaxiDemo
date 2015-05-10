@@ -1,8 +1,0 @@
-C:\Projects\Git\TaxiDemo\Taxi.Shared\bin\Release\TaxiShared.dll
-C:\Projects\Git\TaxiDemo\Taxi.Shared\bin\Release\TaxiShared.pdb
-C:\Projects\Git\TaxiDemo\Taxi.Shared\bin\Release\Akka.dll
-C:\Projects\Git\TaxiDemo\Taxi.Shared\bin\Release\Newtonsoft.Json.dll
-C:\Projects\Git\TaxiDemo\Taxi.Shared\bin\Release\Akka.xml
-C:\Projects\Git\TaxiDemo\Taxi.Shared\bin\Release\Newtonsoft.Json.xml
-C:\Projects\Git\TaxiDemo\Taxi.Shared\obj\Release\TaxiShared.dll
-C:\Projects\Git\TaxiDemo\Taxi.Shared\obj\Release\TaxiShared.pdb

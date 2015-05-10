@@ -14,18 +14,24 @@ var App;
                 _this.status = status;
                 switch (status) {
                     case 1 /* active */:
-                        _this.setColor("#00FF00");
+                        _this.icon.fillColor = "#00FF00";
+                        _this.icon.path = google.maps.SymbolPath.FORWARD_CLOSED_ARROW;
+                        _this.marker.set("icon", _this.icon);
                         break;
                     case 0 /* inactive */:
-                        _this.setColor("#FF0000");
+                        _this.icon.fillColor = "#FF0000";
+                        _this.icon.path = google.maps.SymbolPath.CIRCLE;
+                        _this.marker.set("icon", _this.icon);
                         break;
                     case 2 /* parked */:
-                        _this.setColor("#0000FF");
+                        _this.icon.fillColor = "#0000FF";
+                        _this.icon.path = google.maps.SymbolPath.CIRCLE;
+                        _this.marker.set("icon", _this.icon);
                         break;
                 }
             };
             this.setPosition = function (bearing, position) {
-                _this.positions.push(new PositionReport(position));
+                //   this.positions.push(new PositionReport(position));
                 _this.marker.setPosition(position);
                 _this.icon.rotation = bearing;
                 _this.marker.set("icon", _this.icon);
