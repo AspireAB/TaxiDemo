@@ -14,7 +14,7 @@ namespace TaxiBackend
     {
         private static void Main(string[] args)
         {
-            ServicePointManager.DefaultConnectionLimit = 500;
+            ServicePointManager.DefaultConnectionLimit = 10500;
             using (var system = ActorSystem.Create("TaxiBackend"))
             {
                 var publisher = system.ActorOf(Props.Create(() => new PublisherActor()), "publisher");
@@ -22,17 +22,17 @@ namespace TaxiBackend
             //    RunBar(publisher);
             //    publisher.Tell(new Publisher.Initialize(ActorRefs.Nobody));
  
-             //   RunSL(publisher);
+            //   RunSL(publisher);
 
               //  Spam(publisher);
 
-            //    RunLondon(publisher);
+                RunLondon(publisher);
 
-            //    RunFoo(publisher);
+                RunFoo(publisher);
 
                 RunGöteborg(publisher);
 
-         //       RunLadotBus(publisher);
+                RunLadotBus(publisher);
 
                 Console.ReadLine();
             }
