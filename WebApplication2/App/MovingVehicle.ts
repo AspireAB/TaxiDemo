@@ -10,12 +10,13 @@
         private drawingLine: boolean = false;
         private showingInfo: boolean = false;
         private expanded: boolean = false;
+        private position: google.maps.LatLng;
 
         constructor(public id: string, private map: google.maps.Map) {
             this.icon = {
-                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                path: google.maps.SymbolPath.CIRCLE,
                 scale: 4,
-                fillColor: "#ff5050",
+                fillColor: "#FF0000",
                 fillOpacity: 1,
                 strokeWeight: 1,
                 rotation: 0 //this is how to rotate the pointer
@@ -35,10 +36,6 @@
             this.marker.addListener('click',this.onMapClick);
 
             track(this);
-        }
-
-        public get position() {
-            return this.marker.getPosition();
         }
 
         //TODO: obsolete this.. send all state in position msg instead
@@ -81,6 +78,8 @@
 
         public setPosition = (bearing: number, position: google.maps.LatLng,status: GpsStatus) => {
          //   this.positions.push(new PositionReport(position));
+            this.position = position;
+            this.viewPortChanged();
             switch (status) {
                 case GpsStatus.active:
                     this.icon.fillColor = "#00FF00";
@@ -104,6 +103,10 @@
             if (this.showingInfo) {
                 this.info.setPosition(position);
             }
+        }
+
+        private isInBounds() {
+            return this.map.getBounds().contains(this.position);
         }
 
         private updateLines = (position: google.maps.LatLng) => {
@@ -152,6 +155,18 @@
         private setColor = (color: string) => {
             this.icon.fillColor = color;
             this.marker.set("icon", this.icon);
+        }
+
+        public viewPortChanged = () => {            
+            if (this.isInBounds()) {
+                if (this.marker.getMap() === null) {
+                    this.marker.setMap(this.map);
+                }
+            } else {
+                if (this.marker.getMap() !== null) {
+                    this.marker.setMap(null);
+                }
+            }
         }
     }
 

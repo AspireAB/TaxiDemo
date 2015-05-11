@@ -33,13 +33,11 @@ var App;
                     center: new google.maps.LatLng(34.049678, -118.259469) //"Latitude":34.049678,"Longitude":-118.259469
                 };
                 _this.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-                //google.maps.event.addListener(this.map, 'idle',() => {
-                //    var lat0 = this.map.getBounds().getNorthEast().lat();
-                //    var lng0 = this.map.getBounds().getNorthEast().lng();
-                //    var lat1 = this.map.getBounds().getSouthWest().lat();
-                //    var lng1 = this.map.getBounds().getSouthWest().lng();
-                //    console.log("lat0:" + lat0 + " lng0:" + lng0 + "lat1:" + lat1 + " lng1:" + lng1);
-                //});
+                google.maps.event.addListener(_this.map, 'idle', function () {
+                    _this.vehicles.forEach(function (v) {
+                        v.viewPortChanged();
+                    });
+                });
             };
             this.positionChanged = function (position) {
                 var latlng = new google.maps.LatLng(position.Latitude, position.Longitude);
