@@ -21,7 +21,7 @@ namespace WebApplication2
 
         private async Task statusChanged(Taxi.Status status)
         {
-            await _chat.Clients.All.statusChanged(status);
+            await _chat.Clients.Group(status.Source).statusChanged(status);
         }
 
         private async Task positionChanged(Taxi.PositionBearing position)

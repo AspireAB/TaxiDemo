@@ -5,6 +5,7 @@
         Latitude: number;
         Longitude: number;
         Bearing: number;
+        GpsStatus: GpsStatus;
         Source: string;
     }
     export interface IPositionServer {

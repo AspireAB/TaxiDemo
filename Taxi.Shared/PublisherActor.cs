@@ -83,7 +83,6 @@ namespace TaxiShared
 
         public void Active()
         {
-
             Receive<Publisher.Sources>(s =>
             {
                 var sources = new string[_regNrToTaxiLookup.Keys.Count];
