@@ -121,7 +121,8 @@ namespace TaxiShared
             Receive<Taxi.Position>(p =>
             {
                 RememberPosition(p);
-                if (_positions.All(p2 => p2 == p))
+                //TODO: this makes all vehicles become parked the first tick
+                if ( _positions.All(p2 => p2 == p))
                 {
                     Become(Parked);
                 }

@@ -19,7 +19,7 @@ namespace TaxiBackend
             {
                 var publisher = system.ActorOf(Props.Create(() => new PublisherActor()), "publisher");
 
-           //     RunBar(publisher);
+                RunBar(publisher);
             //    publisher.Tell(new Publisher.Initialize(ActorRefs.Nobody));
  
              //   RunSL(publisher);

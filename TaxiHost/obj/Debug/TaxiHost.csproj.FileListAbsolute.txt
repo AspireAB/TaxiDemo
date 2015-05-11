@@ -30,3 +30,4 @@ C:\Projects\Git\TaxiDemo\TaxiHost\bin\Debug\Google.ProtocolBuffers.Serialization
 C:\Projects\Git\TaxiDemo\TaxiHost\bin\Debug\Newtonsoft.Json.xml
 C:\Projects\Git\TaxiDemo\TaxiHost\obj\Debug\TaxiHost.exe
 C:\Projects\Git\TaxiDemo\TaxiHost\obj\Debug\TaxiHost.pdb
+C:\Projects\Git\TaxiDemo\TaxiHost\obj\Debug\TaxiHost.csprojResolveAssemblyReference.cache

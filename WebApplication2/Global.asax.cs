@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Routing;
 using Akka.Actor;
+using Microsoft.AspNet.SignalR;
 using TaxiShared;
 
 namespace WebApplication2
@@ -13,7 +14,7 @@ namespace WebApplication2
         public static IActorRef _signalRactor;
 
         protected void Application_Start()
-        {
+        {            
             _system = ActorSystem.Create("TaxiSystem");
             _signalRactor = _system.ActorOf(Props.Create(() => new SignalRActor()));
             _publisher = _system.ActorSelection("akka.tcp://TaxiBackend@localhost:8080/user/publisher");
