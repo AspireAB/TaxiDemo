@@ -5,6 +5,7 @@
         Latitude: number;
         Longitude: number;
         Bearing: number;
+        GpsStatus: GpsStatus;
     }
     export interface IChatServer {
 

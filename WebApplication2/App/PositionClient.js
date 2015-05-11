@@ -44,7 +44,7 @@ var App;
             this.positionChanged = function (position) {
                 var latlng = new google.maps.LatLng(position.Latitude, position.Longitude);
                 var vehicle = _this.getVehicle(position.RegNr);
-                vehicle.setPosition(position.Bearing, latlng);
+                vehicle.setPosition(position.Bearing, latlng, position.GpsStatus);
             };
             //TODO: use dictionary lookup
             this.getVehicle = function (regNr) {

@@ -56,7 +56,7 @@
          var latlng = new google.maps.LatLng(position.Latitude, position.Longitude);
 
          var vehicle = this.getVehicle(position.RegNr);
-         vehicle.setPosition(position.Bearing, latlng);
+         vehicle.setPosition(position.Bearing, latlng,position.GpsStatus);
       };
 
       //TODO: use dictionary lookup

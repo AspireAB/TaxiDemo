@@ -41,6 +41,7 @@
             return this.marker.getPosition();
         }
 
+        //TODO: obsolete this.. send all state in position msg instead
         public setStatus = (status: GpsStatus) => {
             this.status = status;
             switch (status) {
@@ -78,8 +79,22 @@
             return this.status === null;
         }
 
-        public setPosition = (bearing: number, position: google.maps.LatLng) => {
+        public setPosition = (bearing: number, position: google.maps.LatLng,status: GpsStatus) => {
          //   this.positions.push(new PositionReport(position));
+            switch (status) {
+                case GpsStatus.active:
+                    this.icon.fillColor = "#00FF00";
+                    this.icon.path = google.maps.SymbolPath.FORWARD_CLOSED_ARROW;
+                    break;
+                case GpsStatus.inactive:
+                    this.icon.fillColor = "#FF0000";
+                    this.icon.path = google.maps.SymbolPath.CIRCLE;
+                    break;
+                case GpsStatus.parked:
+                    this.icon.fillColor = "#0000FF";
+                    this.icon.path = google.maps.SymbolPath.CIRCLE;
+                    break;
+            }
             this.marker.setPosition(position);
             this.icon.rotation = bearing;
             this.marker.set("icon", this.icon);

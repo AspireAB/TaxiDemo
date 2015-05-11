@@ -10,28 +10,42 @@ var App;
             this.drawingLine = false;
             this.showingInfo = false;
             this.expanded = false;
+            //TODO: obsolete this.. send all state in position msg instead
             this.setStatus = function (status) {
                 _this.status = status;
                 switch (status) {
-                    case 1 /* active */:
+                    case App.GpsStatus.active:
                         _this.icon.fillColor = "#00FF00";
                         _this.icon.path = google.maps.SymbolPath.FORWARD_CLOSED_ARROW;
                         _this.marker.set("icon", _this.icon);
                         break;
-                    case 0 /* inactive */:
+                    case App.GpsStatus.inactive:
                         _this.icon.fillColor = "#FF0000";
                         _this.icon.path = google.maps.SymbolPath.CIRCLE;
                         _this.marker.set("icon", _this.icon);
                         break;
-                    case 2 /* parked */:
+                    case App.GpsStatus.parked:
                         _this.icon.fillColor = "#0000FF";
                         _this.icon.path = google.maps.SymbolPath.CIRCLE;
                         _this.marker.set("icon", _this.icon);
                         break;
                 }
             };
-            this.setPosition = function (bearing, position) {
-                //   this.positions.push(new PositionReport(position));
+            this.setPosition = function (bearing, position, status) {
+                switch (status) {
+                    case App.GpsStatus.active:
+                        _this.icon.fillColor = "#00FF00";
+                        _this.icon.path = google.maps.SymbolPath.FORWARD_CLOSED_ARROW;
+                        break;
+                    case App.GpsStatus.inactive:
+                        _this.icon.fillColor = "#FF0000";
+                        _this.icon.path = google.maps.SymbolPath.CIRCLE;
+                        break;
+                    case App.GpsStatus.parked:
+                        _this.icon.fillColor = "#0000FF";
+                        _this.icon.path = google.maps.SymbolPath.CIRCLE;
+                        break;
+                }
                 _this.marker.setPosition(position);
                 _this.icon.rotation = bearing;
                 _this.marker.set("icon", _this.icon);
@@ -112,21 +126,21 @@ var App;
         });
         Object.defineProperty(MovingVehicle.prototype, "isActive", {
             get: function () {
-                return this.status === 1 /* active */;
+                return this.status === App.GpsStatus.active;
             },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(MovingVehicle.prototype, "isInactive", {
             get: function () {
-                return this.status === 0 /* inactive */;
+                return this.status === App.GpsStatus.inactive;
             },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(MovingVehicle.prototype, "isParked", {
             get: function () {
-                return this.status === 2 /* parked */;
+                return this.status === App.GpsStatus.parked;
             },
             enumerable: true,
             configurable: true
