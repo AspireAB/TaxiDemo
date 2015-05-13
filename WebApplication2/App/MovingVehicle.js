@@ -14,17 +14,17 @@ var App;
             this.setStatus = function (status) {
                 _this.status = status;
                 switch (status) {
-                    case App.GpsStatus.active:
+                    case 1 /* active */:
                         _this.icon.fillColor = "#00FF00";
                         _this.icon.path = google.maps.SymbolPath.FORWARD_CLOSED_ARROW;
                         _this.marker.set("icon", _this.icon);
                         break;
-                    case App.GpsStatus.inactive:
+                    case 0 /* inactive */:
                         _this.icon.fillColor = "#FF0000";
                         _this.icon.path = google.maps.SymbolPath.CIRCLE;
                         _this.marker.set("icon", _this.icon);
                         break;
-                    case App.GpsStatus.parked:
+                    case 2 /* parked */:
                         _this.icon.fillColor = "#0000FF";
                         _this.icon.path = google.maps.SymbolPath.CIRCLE;
                         _this.marker.set("icon", _this.icon);
@@ -36,15 +36,15 @@ var App;
                 _this.position = position;
                 _this.viewPortChanged();
                 switch (status) {
-                    case App.GpsStatus.active:
+                    case 1 /* active */:
                         _this.icon.fillColor = "#00FF00";
                         _this.icon.path = google.maps.SymbolPath.FORWARD_CLOSED_ARROW;
                         break;
-                    case App.GpsStatus.inactive:
+                    case 0 /* inactive */:
                         _this.icon.fillColor = "#FF0000";
                         _this.icon.path = google.maps.SymbolPath.CIRCLE;
                         break;
-                    case App.GpsStatus.parked:
+                    case 2 /* parked */:
                         _this.icon.fillColor = "#0000FF";
                         _this.icon.path = google.maps.SymbolPath.CIRCLE;
                         break;
@@ -134,21 +134,21 @@ var App;
         }
         Object.defineProperty(MovingVehicle.prototype, "isActive", {
             get: function () {
-                return this.status === App.GpsStatus.active;
+                return this.status === 1 /* active */;
             },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(MovingVehicle.prototype, "isInactive", {
             get: function () {
-                return this.status === App.GpsStatus.inactive;
+                return this.status === 0 /* inactive */;
             },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(MovingVehicle.prototype, "isParked", {
             get: function () {
-                return this.status === App.GpsStatus.parked;
+                return this.status === 2 /* parked */;
             },
             enumerable: true,
             configurable: true

@@ -6,7 +6,7 @@ var App;
             this.map = null;
             this.vehicles = [];
             this.searchText = "";
-            this.includedStateValues = [App.GpsStatus.active];
+            this.includedStateValues = [1 /* active */];
             this.joinedSources = [];
             this.sources = [];
             this.initialize = function (sources) {
