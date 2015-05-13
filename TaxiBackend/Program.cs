@@ -7,59 +7,39 @@ using System.Xml;
 using Akka.Actor;
 using Newtonsoft.Json;
 using TaxiShared;
+using Topshelf;
 
 namespace TaxiBackend
 {
-    internal class Program
+    public class TransitBackendService
     {
-        private static void Main(string[] args)
+        private IActorRef publisher;
+        private ActorSystem system;
+
+        public TransitBackendService()
         {
-            ServicePointManager.DefaultConnectionLimit = 10500;
-            using (var system = ActorSystem.Create("TaxiBackend"))
-            {
-                var publisher = system.ActorOf(Props.Create(() => new PublisherActor()), "publisher");
+            system = ActorSystem.Create("TaxiBackend");
+            publisher = system.ActorOf(Props.Create(() => new PublisherActor()), "publisher");
 
-            //    RunBar(publisher);
-            //    publisher.Tell(new Publisher.Initialize(ActorRefs.Nobody));
- 
-            //   RunSL(publisher);
+            RunLondon(publisher);
 
-              //  Spam(publisher);
+            RunFoo(publisher);
 
-                RunLondon(publisher);
+            RunGöteborg(publisher);
 
-                RunFoo(publisher);
+            RunLadotBus(publisher);
 
-                RunGöteborg(publisher);
-
-                RunLadotBus(publisher);
-
-                Console.ReadLine();
-            }
-        }
-
-        private static async void Spam(IActorRef publisher)
-        {
-            await Task.Yield();
-            while (true)
-            {
-                for (int i = 0; i < 1000; i++)
-                {
-                    publisher.Tell(new Publisher.Position(0, 0, "foo", "Spam"));
-                }
-                await Task.Delay(TimeSpan.FromSeconds(1));
-            }
         }
 
         private static void RunBar(IActorRef publisher)
         {
-
-            for (int i = 0; i < 500; i++)
+            for (var i = 0; i < 500; i++)
             {
-                RunBar(publisher,i);
+                RunBar(publisher, i);
             }
         }
-        private static async void RunBar(IActorRef publisher,int agencyId)
+
+        private static async void RunBar(IActorRef publisher, int agencyId)
         {
             await Task.Yield();
             try
@@ -89,11 +69,8 @@ namespace TaxiBackend
             }
             catch
             {
-                
             }
         }
-
-        //http://feeds.transloc.com/3/routes.jsonp?agencies=116
 
         private static void RunLadotBus(IActorRef publisher)
         {
@@ -112,36 +89,10 @@ namespace TaxiBackend
             }
         }
 
-        //7e18baf233d24ad2b9d5ca539f8a7298
-
-        //private static async void RunSL(IActorRef publisher)
-        //{
-        //    var url =
-        //        "http://crossorigin.me/http://reseplanerare.vasttrafik.se/bin/query.exe/dny?&look_minx=10044745&look_maxx=12040389&look_miny=57025027&look_maxy=58406811&tpl=trains2json&look_productclass=1023&look_json=yes&performLocating=1&look_nv=zugposmode|2|get_ageofreport|yes|get_rtmsgstatus|yes|get_linenumber|yes|interval|10000|intervalstep|10000|&unique=1399449664000&";
-        //    var c = new WebClient();
-        //    while (true)
-        //    {
-        //        var data = await c.DownloadDataTaskAsync(new Uri(url));
-        //        var str = Encoding.UTF8.GetString(data);
-        //        dynamic res = JsonConvert.DeserializeObject(str);
-
-        //        foreach (var bus in res.look.trains)
-        //        {
-        //            string id = bus.trainid;
-        //            double lat = bus.y / 1000000d;
-        //            double lon = bus.x / 1000000d;
-
-        //            publisher.Tell(new Publisher.Position(lon, lat, id));
-        //        }
-
-        //        //how long should we wait before polling again?
-        //        await Task.Delay(TimeSpan.FromSeconds(1));
-        //    }
-        //}
-
         private static async void RunGöteborg(IActorRef publisher)
         {
-            var url ="http://reseplanerare.vasttrafik.se/bin/query.exe/dny?&look_minx=0&look_maxx=99999999&look_miny=0&look_maxy=99999999&tpl=trains2json&performLocating=1";
+            var url =
+                "http://reseplanerare.vasttrafik.se/bin/query.exe/dny?&look_minx=0&look_maxx=99999999&look_miny=0&look_maxy=99999999&tpl=trains2json&performLocating=1";
             var c = new WebClient();
             while (true)
             {
@@ -152,8 +103,8 @@ namespace TaxiBackend
                 foreach (var bus in res.look.trains)
                 {
                     string id = bus.trainid;
-                    double lat = bus.y / 1000000d;
-                    double lon = bus.x / 1000000d;
+                    double lat = bus.y/1000000d;
+                    double lon = bus.x/1000000d;
 
                     publisher.Tell(new Publisher.Position(lon, lat, id, "Västtrafik"));
                 }
@@ -163,7 +114,6 @@ namespace TaxiBackend
             }
         }
 
-        //http://text90947.com/bustracking/wavetransit/m/businfo.jsp?refine=&iefix=82607
         private static async void RunFoo(IActorRef publisher)
         {
             var c = new WebClient();
@@ -174,7 +124,8 @@ namespace TaxiBackend
                     var data =
                         await
                             c.DownloadDataTaskAsync(
-                                new Uri("http://text90947.com/bustracking/wavetransit/m/businfo.jsp?refine=&iefix=82607"));
+                                new Uri(
+                                    "http://text90947.com/bustracking/wavetransit/m/businfo.jsp?refine=&iefix=82607"));
                     var str = Encoding.UTF8.GetString(data);
                     var doc = new XmlDocument();
                     doc.LoadXml(str);
@@ -191,7 +142,6 @@ namespace TaxiBackend
                 }
                 catch
                 {
-                    
                 }
 
                 await Task.Delay(TimeSpan.FromSeconds(1));
@@ -203,7 +153,8 @@ namespace TaxiBackend
             var c = new WebClient();
             while (true)
             {
-                var data = await c.DownloadDataTaskAsync(new Uri("http://traintimes.org.uk/map/london-buses/data/2"));
+                var data =
+                    await c.DownloadDataTaskAsync(new Uri("http://traintimes.org.uk/map/london-buses/data/2"));
                 var str = Encoding.UTF8.GetString(data);
                 dynamic res = JsonConvert.DeserializeObject(str);
                 //   Console.WriteLine("Downloaded {0}",url);
@@ -233,7 +184,7 @@ namespace TaxiBackend
                     var data = await c.DownloadDataTaskAsync(new Uri(url));
                     var str = Encoding.UTF8.GetString(data);
                     dynamic res = JsonConvert.DeserializeObject(str);
-                 //   Console.WriteLine("Downloaded {0}",url);
+                    //   Console.WriteLine("Downloaded {0}",url);
 
                     foreach (var bus in res)
                     {
@@ -241,7 +192,7 @@ namespace TaxiBackend
                         double lat = bus.Latitude;
                         double lon = bus.Longitude;
 
-                        publisher.Tell(new Publisher.Position(lon, lat, id, source));                    
+                        publisher.Tell(new Publisher.Position(lon, lat, id, source));
                     }
 
                     //how long should we wait before polling again?
@@ -269,6 +220,37 @@ namespace TaxiBackend
             {
                 return null;
             }
+        }
+
+        public void Start()
+        {
+           
+        }
+
+        public void Stop()
+        {
+            system.Shutdown();
+        }
+    }
+
+    public class Program
+    {
+        public static void Main()
+        {
+            HostFactory.Run(x => //1
+            {
+                x.Service<TransitBackendService>(s => //2
+                {
+                    s.ConstructUsing(name => new TransitBackendService()); //3
+                    s.WhenStarted(tc => tc.Start()); //4
+                    s.WhenStopped(tc => tc.Stop()); //5
+                });
+                x.RunAsLocalSystem(); //6
+
+                x.SetDescription("TransitService"); //7
+                x.SetDisplayName("TransitService"); //8
+                x.SetServiceName("TransitService"); //9
+            }); //10
         }
     }
 }

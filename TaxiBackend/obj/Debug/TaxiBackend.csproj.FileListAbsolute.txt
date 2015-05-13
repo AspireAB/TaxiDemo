@@ -40,3 +40,4 @@ C:\Users\Hugo\Source\Repos\TaxiDemo\TaxiBackend\bin\Debug\Google.ProtocolBuffers
 C:\Users\Hugo\Source\Repos\TaxiDemo\TaxiBackend\bin\Debug\Google.ProtocolBuffers.Serialization.xml
 C:\Users\Hugo\Source\Repos\TaxiDemo\TaxiBackend\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Hugo\Source\Repos\TaxiDemo\TaxiBackend\bin\Debug\NExtra.xml
+C:\Projects\Git\TaxiDemo\TaxiBackend\bin\Debug\Topshelf.dll
