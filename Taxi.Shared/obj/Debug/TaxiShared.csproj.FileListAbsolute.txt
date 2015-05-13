@@ -8,7 +8,6 @@ C:\Projects\Git\TaxiDemo\Taxi.Shared\bin\Debug\Newtonsoft.Json.xml
 C:\Projects\Git\TaxiDemo\Taxi.Shared\bin\Debug\NExtra.xml
 C:\Projects\Git\TaxiDemo\Taxi.Shared\obj\Debug\TaxiShared.dll
 C:\Projects\Git\TaxiDemo\Taxi.Shared\obj\Debug\TaxiShared.pdb
-C:\Projects\Git\TaxiDemo\Taxi.Shared\obj\Debug\TaxiShared.csprojResolveAssemblyReference.cache
 C:\Users\Hugo\Source\Repos\TaxiDemo\Taxi.Shared\bin\Debug\TaxiShared.dll
 C:\Users\Hugo\Source\Repos\TaxiDemo\Taxi.Shared\bin\Debug\TaxiShared.pdb
 C:\Users\Hugo\Source\Repos\TaxiDemo\Taxi.Shared\bin\Debug\Akka.dll

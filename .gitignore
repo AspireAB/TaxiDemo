@@ -1,14 +1,3 @@
 **/obj/**
 **/bin/**
-TaxiHost/bin/Debug/TaxiHost.exe
-TaxiHost/bin/Debug/TaxiHost.pdb
-TaxiHost/obj/Debug/TaxiHost.exe
-TaxiHost/obj/Debug/TaxiHost.pdb
-WebApplication2/bin/WebApplication2.dll
-WebApplication2/bin/WebApplication2.pdb
-WebApplication2/obj/Debug/WebApplication2.dll
-WebApplication2/obj/Debug/WebApplication2.pdb
-TaxiHost/bin/Debug/TaxiHost.exe
-TaxiHost/bin/Debug/TaxiHost.pdb
-TaxiHost/obj/Debug/TaxiHost.exe
-TaxiHost/obj/Debug/TaxiHost.pdb
+*/bin/Debug/*
