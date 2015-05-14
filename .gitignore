@@ -1,3 +1,6 @@
 **/obj/**
 **/bin/**
 */bin/Debug/*
+*.suo
+*/bin/Debug/*
+*/obj/Debug/*
