@@ -389,6 +389,16 @@
             <param name="other"></param>
             <returns></returns>
         </member>
+        <member name="M:Google.ProtocolBuffers.AbstractBuilder`2.ToString">
+            <summary>
+            Converts this builder to a string using <see cref="T:Google.ProtocolBuffers.TextFormat"/>.
+            </summary>
+            <remarks>
+            This method is not sealed (in the way that it is in <see cref="T:Google.ProtocolBuffers.AbstractMessage`2"/>
+            as it was added after earlier releases; some other implementations may already be overriding the
+            method.
+            </remarks>
+        </member>
         <member name="T:Google.ProtocolBuffers.AbstractMessage`2">
             <summary>
             Implementation of the non-generic IMessage interface as far as possible.
@@ -1742,6 +1752,11 @@
             the message was actually as big as expected, which can help bugs.
             </summary>
         </member>
+        <member name="P:Google.ProtocolBuffers.CodedOutputStream.Position">
+            <summary>
+            Returns the current position in the stream, or the position in the output buffer
+            </summary>
+        </member>
         <member name="P:Google.ProtocolBuffers.CodedOutputStream.SpaceLeft">
             <summary>
             If writing to a flat array, returns the space left in the array. Otherwise,
@@ -2589,7 +2604,7 @@
         <member name="M:Google.ProtocolBuffers.CodedInputStream.ReadEnum``1(``0@,System.Object@)">
             <summary>
             Reads an enum field value from the stream. If the enum is valid for type T,
-            then the ref value is set and it returns true.  Otherwise the unkown output
+            then the ref value is set and it returns true.  Otherwise the unknown output
             value is set and this method returns false.
             </summary>   
         </member>
@@ -3488,6 +3503,18 @@
             <value>
             An unmodifiable list of methods in this service.
             </value>
+        </member>
+        <member name="M:Google.ProtocolBuffers.EnumParser`1.TryConvert(System.Int32,`0@)">
+            <summary>
+            Tries to convert an integer to its enum representation. This would take an out parameter,
+            but the caller uses ref, so this approach is simpler.
+            </summary>
+        </member>
+        <member name="M:Google.ProtocolBuffers.EnumParser`1.TryConvert(System.String,`0@)">
+            <summary>
+            Tries to convert a string to its enum representation. This would take an out parameter,
+            but the caller uses ref, so this approach is simpler.
+            </summary>
         </member>
         <member name="P:Google.ProtocolBuffers.ExtensionInfo.Descriptor">
             <summary>
@@ -4495,6 +4522,12 @@
         <member name="M:Google.ProtocolBuffers.TextFormat.Print(Google.ProtocolBuffers.IMessage,System.IO.TextWriter)">
             <summary>
             Outputs a textual representation of the Protocol Message supplied into
+            the parameter output.
+            </summary>
+        </member>
+        <member name="M:Google.ProtocolBuffers.TextFormat.Print(Google.ProtocolBuffers.IBuilder,System.IO.TextWriter)">
+            <summary>
+            Outputs a textual representation of the Protocol Message builder supplied into
             the parameter output.
             </summary>
         </member>
