@@ -9,3 +9,14 @@ D:\Projects\johannordin\TaxiDemo2\Taxi.Shared\bin\Debug\NExtra.xml
 D:\Projects\johannordin\TaxiDemo2\Taxi.Shared\obj\Debug\TaxiShared.csprojResolveAssemblyReference.cache
 D:\Projects\johannordin\TaxiDemo2\Taxi.Shared\obj\Debug\TaxiShared.dll
 D:\Projects\johannordin\TaxiDemo2\Taxi.Shared\obj\Debug\TaxiShared.pdb
+C:\Projects\Git\TaxiDemo\Taxi.Shared\bin\Debug\TaxiShared.dll
+C:\Projects\Git\TaxiDemo\Taxi.Shared\bin\Debug\TaxiShared.pdb
+C:\Projects\Git\TaxiDemo\Taxi.Shared\bin\Debug\Akka.dll
+C:\Projects\Git\TaxiDemo\Taxi.Shared\bin\Debug\Newtonsoft.Json.dll
+C:\Projects\Git\TaxiDemo\Taxi.Shared\bin\Debug\NExtra.dll
+C:\Projects\Git\TaxiDemo\Taxi.Shared\bin\Debug\Akka.xml
+C:\Projects\Git\TaxiDemo\Taxi.Shared\bin\Debug\Newtonsoft.Json.xml
+C:\Projects\Git\TaxiDemo\Taxi.Shared\bin\Debug\NExtra.xml
+C:\Projects\Git\TaxiDemo\Taxi.Shared\obj\Debug\TaxiShared.csprojResolveAssemblyReference.cache
+C:\Projects\Git\TaxiDemo\Taxi.Shared\obj\Debug\TaxiShared.dll
+C:\Projects\Git\TaxiDemo\Taxi.Shared\obj\Debug\TaxiShared.pdb

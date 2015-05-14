@@ -17,15 +17,9 @@ namespace TaxiFrontend.Actors
 		{
 			_chat = GlobalHost.ConnectionManager.GetHubContext<PositionHub>();
 			Receive<Taxi.PositionBearing>(p => PositionChanged(p));
-			Receive<Taxi.Status>(status => StatusChanged(status));
 			Receive<Publisher.SourceAvailable>(s => SourceChanged(s));
 			Receive<UpdatedBounds>(bounds => UserBounds[bounds.UserId] = bounds);
 			Receive<Disconnected>(disconnected => UserBounds.Remove(disconnected.UserId));
-		}
-
-		private async Task StatusChanged(Taxi.Status status)
-		{
-			await _chat.Clients.Group(status.Source).statusChanged(status);
 		}
 
 		private async Task PositionChanged(Taxi.PositionBearing position)

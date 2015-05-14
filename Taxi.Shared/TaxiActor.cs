@@ -77,21 +77,6 @@ namespace TaxiShared
 			public double Longitude { get; private set; }
 			public double Latitude { get; private set; }
 		}
-
-		public class Status
-		{
-			public GpsStatus GpsStatus { get; private set; }
-			public string Id { get; private set; }
-			public string Source { get; private set; }
-
-
-			public Status(GpsStatus gpsStatus, string id, string source)
-			{
-				GpsStatus = gpsStatus;
-				Id = id;
-				Source = source;
-			}
-		}
 	}
 
 	public class TaxiActor : ReceiveActor
@@ -116,22 +101,22 @@ namespace TaxiShared
 
 		public void Driving()
 		{
-			_presenter.Tell(new Taxi.Status(GpsStatus.Active, _id, _source));
-
 			ReceiveIdle();
 
 			Receive<Taxi.Position>(p =>
 			{
+                ScheduleIdleTimer();
 				RememberPosition(p);
 				//TODO: this makes all vehicles become parked the first tick
 				if (_positions.All(p2 => p2 == p))
 				{
+                    _presenter.Tell(new Taxi.PositionBearing(p.Longitude, p.Latitude, Bearing(), GpsStatus.Parked, _id, _source));
 					Become(Parked);
 				}
-
-				ScheduleIdleTimer();
-
-				_presenter.Tell(new Taxi.PositionBearing(p.Longitude, p.Latitude, Bearing(), GpsStatus.Active, _id, _source));
+				else
+				{
+                    _presenter.Tell(new Taxi.PositionBearing(p.Longitude, p.Latitude, Bearing(), GpsStatus.Active, _id, _source));
+				}
 			});
 		}
 
@@ -154,38 +139,38 @@ namespace TaxiShared
 
 		public void Parked()
 		{
-			_presenter.Tell(new Taxi.Status(GpsStatus.Parked, _id, _source));
-
 			ReceiveIdle();
 
 			Receive<Taxi.Position>(p =>
 			{
+                ScheduleIdleTimer();
 				RememberPosition(p);
-				if (_positions.Any(p2 => p2 != p))
-				{
-					Become(Driving);
-				}
-
-				ScheduleIdleTimer();
-
-				_presenter.Tell(new Taxi.PositionBearing(p.Longitude, p.Latitude, Bearing(), GpsStatus.Parked, _id, _source));
+			    if (_positions.Any(p2 => p2 != p))
+			    {
+			        _presenter.Tell(new Taxi.PositionBearing(p.Longitude, p.Latitude, Bearing(), GpsStatus.Active, _id, _source));
+			        Become(Driving);
+			    }
+			    else
+			    {
+			        _presenter.Tell(new Taxi.PositionBearing(p.Longitude, p.Latitude, Bearing(), GpsStatus.Parked, _id, _source));
+			    }
 			});
 		}
 
 		public void Disconnected()
 		{
-			_presenter.Tell(new Taxi.Status(GpsStatus.Inactive, _id, _source));
-
 			Receive<Taxi.Position>(p =>
 			{
+                ScheduleIdleTimer();
 				Become(Driving);
 
 				//we are waking up from a period of silence
 				_positions.Clear();
 
-				ScheduleIdleTimer();
+				
 
-				_presenter.Tell(new Taxi.PositionBearing(p.Longitude, p.Latitude, Bearing(), GpsStatus.Inactive, _id, _source));
+                //tell the world we are not driving again
+				_presenter.Tell(new Taxi.PositionBearing(p.Longitude, p.Latitude, Bearing(), GpsStatus.Active, _id, _source));
 			});
 		}
 

@@ -34,7 +34,7 @@
         public initMap = () => {
             var mapOptions = <google.maps.MapOptions>{
                 zoom: 13,
-                center: new google.maps.LatLng(34.049678, -118.259469) //"Latitude":34.049678,"Longitude":-118.259469
+                center: new google.maps.LatLng(57.70887000, 11.97456000) 
             };
             this.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
             google.maps.event.addListener(this.map, 'idle',() => {
@@ -73,11 +73,6 @@
             var positionPair = vehicles[0];
 
             return positionPair;
-        }
-
-        public statusChanged = (taxiStatus: ITaxiStatus) => {
-            var vehicle = this.getVehicle(taxiStatus.Id);
-            vehicle.setStatus(taxiStatus.GpsStatus);
         }
     }
 }

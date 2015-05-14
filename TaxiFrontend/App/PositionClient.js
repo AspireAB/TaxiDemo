@@ -25,7 +25,7 @@ var App;
             this.initMap = function () {
                 var mapOptions = {
                     zoom: 13,
-                    center: new google.maps.LatLng(34.049678, -118.259469)
+                    center: new google.maps.LatLng(57.70887000, 11.97456000)
                 };
                 _this.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
                 google.maps.event.addListener(_this.map, 'idle', function () {
@@ -57,10 +57,6 @@ var App;
                 }
                 var positionPair = vehicles[0];
                 return positionPair;
-            };
-            this.statusChanged = function (taxiStatus) {
-                var vehicle = _this.getVehicle(taxiStatus.Id);
-                vehicle.setStatus(taxiStatus.GpsStatus);
             };
             App.track(this);
         }

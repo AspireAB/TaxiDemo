@@ -23,7 +23,6 @@
 	}
 	 export interface IOnUpdateBounds { (bounds: IUpdatedBounds): void}
     export interface IPositionClient {
-        statusChanged: (taxiStatus: ITaxiStatus) => void;
         positionChanged: (position: IPositionChanged) => void;
         //sourceAdded: (source: string) => void;
         //initialize: (sources: string[]) => void;
