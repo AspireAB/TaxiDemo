@@ -1,5 +1,9 @@
 ﻿module App {
-
+    export interface IAggregatedData {
+        Latitude: number;
+        Longitude: number;
+        VehicleCount: number;
+    }
     export interface IPositionChanged {
         Id: string;
         Latitude: number;
@@ -25,6 +29,7 @@
 	 export interface IOnUpdateBounds { (bounds: IUpdatedBounds): void}
     export interface IPositionClient {
         positionChanged: (position: IPositionChanged) => void;
+        aggregated: (data: IAggregatedData) => void ;
         //sourceAdded: (source: string) => void;
         //initialize: (sources: string[]) => void;
     }

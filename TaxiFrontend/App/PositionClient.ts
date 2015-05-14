@@ -72,5 +72,9 @@
 
             return positionPair;
         }
+
+        public aggregated = (data: IAggregatedData) => {
+            console.log(data);
+        }
     }
 }

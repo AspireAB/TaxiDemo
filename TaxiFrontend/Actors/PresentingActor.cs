@@ -12,12 +12,15 @@ namespace TaxiFrontend.Actors
 	{
 		private readonly IHubContext _chat;
         private static readonly Dictionary<string, ViewPort> UserBounds = new Dictionary<string, ViewPort>();
+	    private readonly IActorRef _aggregator;
 
 		public PresentingActor()
 		{
+		    _aggregator = Context.ActorOf(Props.Create(() => new AggregatorActor(Self)));
 			_chat = GlobalHost.ConnectionManager.GetHubContext<PositionHub>();
 			Receive<Taxi.PositionBearing>(p => PositionChanged(p));
 			Receive<Publisher.SourceAvailable>(s => SourceChanged(s));
+		    Receive<AggregatedData>(a => Aggregated(a));
 			Receive<UpdatedBounds>(bounds =>
 			{
                 //create a new viewport for the user
@@ -27,16 +30,20 @@ namespace TaxiFrontend.Actors
 			Receive<Disconnected>(disconnected => UserBounds.Remove(disconnected.UserId));
 		}
 
+	    private async Task Aggregated(AggregatedData data)
+	    {
+	       // var users = FindUsersSeeingThisArea(data);
+            await _chat.Clients.All.aggregated(data);
+	    }
+
+
 		private async Task PositionChanged(Taxi.PositionBearing position)
 		{
 			var zoomedInUsers = FindUsersSeeingThisVehicle(position);
 			await _chat.Clients.Clients(zoomedInUsers).positionChanged(position);
 
-            //TODO: send aggregated events for clients that are zoomed out
-
-            var zoomedOutUsers = FindUsersSeeingThisArea(position);
-            //await _chat.Clients.Clients(zoomedInUsers).positionChanged(position);
-            //aggregate
+            //pipe the position to the aggregator
+            _aggregator.Tell(position);
 		}
 
         //TODO: inconsistency between messages and methods. 
@@ -45,16 +52,16 @@ namespace TaxiFrontend.Actors
 			await _chat.Clients.All.sourceAdded(s.SourceName);
 		}
 
-        private List<string> FindUsersSeeingThisArea(Taxi.PositionBearing position)
+        private List<string> FindUsersSeeingThisArea(AggregatedData data)
         {
-            return UserBounds.Where(b => b.Value.ZoomLevel <= 10 && b.Value.Contains(position))
+            return UserBounds.Where(b => b.Value.ZoomLevel <= 10 && b.Value.Contains(data.Longitude,data.Latitude))
                 .Select(b => b.Key)
                 .ToList();
         }
 
 		private List<string> FindUsersSeeingThisVehicle(Taxi.PositionBearing position)
 		{
-			return UserBounds.Where(b => b.Value.ZoomLevel > 10 && b.Value.Contains(position))
+			return UserBounds.Where(b => b.Value.ZoomLevel > 10 && b.Value.Contains(position.Longitude,position.Latitude))
 				.Select(b => b.Key)
 				.ToList();
 		}

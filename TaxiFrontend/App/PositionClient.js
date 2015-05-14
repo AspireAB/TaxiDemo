@@ -57,6 +57,9 @@ var App;
                 var positionPair = vehicles[0];
                 return positionPair;
             };
+            this.aggregated = function (data) {
+                console.log(data);
+            };
             App.track(this);
         }
         Object.defineProperty(PositionClient.prototype, "orderedVehicles", {
