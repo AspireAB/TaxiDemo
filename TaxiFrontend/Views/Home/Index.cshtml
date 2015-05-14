@@ -1,0 +1,60 @@
+﻿@using System.Web.Optimization
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Things moving on a map, for reals.</title>
+	<style>
+		html, body, #map-canvas {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+			margin-right: 100px;
+		}
+		#vehicles {
+			position: absolute;
+			top: 0;
+			right: 0;
+			height: 100%;
+			margin-bottom: 0;
+			overflow-y: scroll;
+			width: 200px;
+		}
+	</style>
+	@Scripts.Render("~/bundles/js")
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <script src="~/signalr/hubs"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+	<script id="filter-button" type="text/html">
+		<button class="btn btn-default" data-bind="css: {'btn-success': $parent.isIncluded(value) }, click: function() { $parent.toggleStatus(value);}">
+			<span class="glyphicon" data-bind="css: css"></span>
+		</button>
+	</script>
+</head>
+	<body>
+		<div id="map-canvas"></div>
+		<div id="vehicles" data-bind="with: client" class="panel panel-default">
+			<div class="input-group">
+				<input type="text" data-bind="value: searchText, valueUpdate: 'input'" class="form-control" placeholder="Search for...">
+			</div>
+			<div class="btn-group btn-group-justified" role="group">
+				<div class="btn-group" role="group" data-bind="template: { name: 'filter-button', data: { value: App.GpsStatus.active, css: 'glyphicon-ok-circle' } }"></div>
+				<div class="btn-group" role="group" data-bind="template: { name: 'filter-button', data: { value: App.GpsStatus.inactive, css: 'glyphicon-ban-circle' } }"></div>
+				<div class="btn-group" role="group" data-bind="template: { name: 'filter-button', data: { value: App.GpsStatus.parked, css: 'glyphicon-remove-circle' } }"></div>
+				<div class="btn-group" role="group" data-bind="template: { name: 'filter-button', data: { value: null, css: 'glyphicon-eye-close' } }"></div>
+			</div>
+			<ul data-bind="foreach: orderedVehicles" class="nav nav-pills nav-stacked">
+				<li>
+					<a href="" data-bind="click: onClick">
+						<span data-bind="text: id"></span>
+						<span class="glyphicon pull-right" aria-hidden="true" data-bind="css: {
+    'glyphicon-ok-circle text-success': isActive,
+    'glyphicon-ban-circle text-danger': isInactive,
+    'glyphicon-remove-circle text-muted': isParked,
+    'glyphicon-eye-close text-muted': isNoState
+}"></span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</body>
+</html>
