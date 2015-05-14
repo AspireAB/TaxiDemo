@@ -12,7 +12,8 @@
 		LatitudeNorthEast: number;
 		LongitudeNorthEast: number;
 		LatitudeSouthWest: number;
-		LongitudeSouthWest: number;
+        LongitudeSouthWest: number;
+        ZoomLevel: number;
 	}
 
     export interface IPositionServer {

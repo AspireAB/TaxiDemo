@@ -8,9 +8,6 @@ var App;
             this.vehicles = [];
             this.searchText = "";
             this.includedStateValues = [1 /* active */];
-            this.toggleStatus = function (status) {
-                _this.includedStateValues.toggleValue(status);
-            };
             this.isIncluded = function (status) {
                 return _this.includedStateValues.indexOf(status) !== -1;
             };
@@ -36,11 +33,13 @@ var App;
             this.updateBounds = function () {
                 var northEast = _this.map.getBounds().getNorthEast();
                 var southWest = _this.map.getBounds().getSouthWest();
+                var zoom = _this.map.getZoom();
                 _this.onUpdatedBounds({
                     LatitudeNorthEast: northEast.lat(),
                     LongitudeNorthEast: northEast.lng(),
                     LatitudeSouthWest: southWest.lat(),
-                    LongitudeSouthWest: southWest.lng()
+                    LongitudeSouthWest: southWest.lng(),
+                    ZoomLevel: zoom,
                 });
             };
             this.positionChanged = function (position) {

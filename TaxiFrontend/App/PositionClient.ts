@@ -15,10 +15,6 @@
                 .sort((a, b) => a.id > b.id ? 1 : -1);
         }
 
-        private toggleStatus = (status: GpsStatus) => {
-	        this.includedStateValues.toggleValue(status);
-        }
-
         public isIncluded = (status: GpsStatus) => {
 	        return this.includedStateValues.indexOf(status) !== -1;
         }
@@ -45,13 +41,15 @@
 
 		 private updateBounds = () => {
 			 var northEast = this.map.getBounds().getNorthEast();
-		    var southWest = this.map.getBounds().getSouthWest();
-			 this.onUpdatedBounds({
-				 LatitudeNorthEast: northEast.lat(),
-				 LongitudeNorthEast: northEast.lng(),
-				 LatitudeSouthWest: southWest.lat(),
-				 LongitudeSouthWest: southWest.lng()
-			 });
+             var southWest = this.map.getBounds().getSouthWest();
+		     var zoom = this.map.getZoom();
+		     this.onUpdatedBounds({
+		         LatitudeNorthEast: northEast.lat(),
+		         LongitudeNorthEast: northEast.lng(),
+		         LatitudeSouthWest: southWest.lat(),
+		         LongitudeSouthWest: southWest.lng(),
+		         ZoomLevel: zoom,
+		 });
 		 }
 
 	    public positionChanged = (position: IPositionChanged) => {
