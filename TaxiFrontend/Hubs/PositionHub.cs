@@ -10,12 +10,12 @@ namespace TaxiFrontend.Hubs
 		public void OnUpdateBounds(PresentingActor.UpdatedBounds updatedBounds)
 		{
 			updatedBounds.UserId = Context.ConnectionId;
-			FrontActorSystem.Presenter.Tell(updatedBounds);
+			FrontActorSystem.SignalRActor.Tell(updatedBounds);
 		}
 
 		public override Task OnDisconnected(bool stopCalled)
 		{
-			FrontActorSystem.Presenter.Tell(new PresentingActor.Disconnected(Context.ConnectionId));
+			FrontActorSystem.SignalRActor.Tell(new PresentingActor.Disconnected(Context.ConnectionId));
 			return base.OnDisconnected(stopCalled);
 		}
 	}

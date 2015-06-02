@@ -19,7 +19,7 @@ namespace TaxiFrontend.Actors
 		    _aggregator = Context.ActorOf(Props.Create(() => new AggregatorActor(Self)));
 			_chat = GlobalHost.ConnectionManager.GetHubContext<PositionHub>();
 			Receive<Taxi.PositionBearing>(p => PositionChanged(p));
-			Receive<Publisher.SourceAvailable>(s => SourceChanged(s));
+			Receive<Presenter.SourceAvailable>(s => SourceChanged(s));
 		    Receive<AggregatedData>(a => Aggregated(a));
 			Receive<UpdatedBounds>(bounds =>
 			{
@@ -47,7 +47,7 @@ namespace TaxiFrontend.Actors
 		}
 
         //TODO: inconsistency between messages and methods. 
-		private async Task SourceChanged(Publisher.SourceAvailable s)
+		private async Task SourceChanged(Presenter.SourceAvailable s)
 		{
 			await _chat.Clients.All.sourceAdded(s.SourceName);
 		}

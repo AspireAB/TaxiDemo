@@ -5,7 +5,7 @@ using Akka.Event;
 
 namespace TaxiShared
 {
-	public static class Publisher
+	public static class Presenter
 	{
 		public class Sources
 		{
@@ -30,12 +30,12 @@ namespace TaxiShared
 		}
 		public class Initialize
 		{
-			public Initialize(IActorRef presenter)
+			public Initialize(IActorRef client)
 			{
-				Presenter = presenter;
+				Client = client;
 			}
 
-			public IActorRef Presenter { get; private set; }
+			public IActorRef Client { get; private set; }
 		}
 
 		public class Position
@@ -59,34 +59,24 @@ namespace TaxiShared
 	public class PublisherActor : ReceiveActor
 	{
 		private readonly Dictionary<string, Dictionary<string, IActorRef>> _idToVehicleLookup;
-		private IActorRef _presenter;
-		private ILoggingAdapter _log = Context.GetLogger();
+		private readonly IActorRef _presenter;
+		private readonly ILoggingAdapter _log = Context.GetLogger();
 
-		public PublisherActor()
-		{
-			_idToVehicleLookup = new Dictionary<string, Dictionary<string, IActorRef>>();
+        public PublisherActor(IActorRef presenter)
+        {
+            _presenter = presenter;
+            _idToVehicleLookup = new Dictionary<string, Dictionary<string, IActorRef>>();
 
-			Become(Initializing);
-
-		}
-
-		public void Initializing()
-		{
-			Receive<Publisher.Initialize>(s =>
-			{
-				Console.WriteLine("Publisher started!");
-				_presenter = s.Presenter;
-				Become(Active);
-			});
-		}
+            Become(Active);
+        }
 
 		public void Active()
 		{
-			Receive<Publisher.Sources>(s =>
+			Receive<Presenter.Sources>(s =>
 			{
 				var sources = new string[_idToVehicleLookup.Keys.Count];
 				_idToVehicleLookup.Keys.CopyTo(sources, 0);
-				Sender.Tell(new Publisher.Sources(sources), Self);
+				Sender.Tell(new Presenter.Sources(sources), Self);
 			});
 			//remove actors that have died
 			Receive<Terminated>(t =>
@@ -98,7 +88,7 @@ namespace TaxiShared
 			});
 
 			//forward positions to taxis
-			Receive<Publisher.Position>(p =>
+			Receive<Presenter.Position>(p =>
 			{
 				var actor = GetVehicleBySourceAndId(p.Source, p.Id);
 				var position = new Taxi.Position(p.Longitude, p.Latitude);
@@ -111,14 +101,13 @@ namespace TaxiShared
 			if (_idToVehicleLookup.ContainsKey(source) == false)
 			{
 				_idToVehicleLookup.Add(source, new Dictionary<string, IActorRef>());
-				_presenter.Tell(new Publisher.SourceAvailable(source));
+				_presenter.Tell(new Presenter.SourceAvailable(source));
 			}
 			var dictionary = _idToVehicleLookup[source];
 
 			if (dictionary.ContainsKey(id) == false)
 			{
-				var taxiCarActor = Context.ActorOf(Props.Create(() =>
-					 new TaxiActor(_presenter, id, source)));
+				var taxiCarActor = Context.ActorOf(Props.Create(() => new TaxiActor(_presenter, id, source)));
 				dictionary.Add(id, taxiCarActor);
 				_log.Info("Creating new Taxi {0}", id);
 				_log.Info("Tracking {0} objects", dictionary.Count);

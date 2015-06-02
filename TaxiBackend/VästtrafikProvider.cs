@@ -26,7 +26,7 @@ namespace TaxiBackend
                     double lat = bus.y / 1000000d;
                     double lon = bus.x / 1000000d;
 
-                    publisher.Tell(new Publisher.Position(lon, lat, id, "Västtrafik"));
+                    publisher.Tell(new Presenter.Position(lon, lat, id, "Västtrafik"));
                 }
 
                 //how long should we wait before polling again?

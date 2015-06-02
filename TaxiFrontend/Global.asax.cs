@@ -18,7 +18,7 @@ namespace TaxiFrontend
 
 		private static void RegisterActors()
 		{
-			FrontActorSystem.Publisher.Tell(new Publisher.Initialize(FrontActorSystem.Presenter));
+			FrontActorSystem.Presenter.Tell(new Presenter.Initialize(FrontActorSystem.SignalRActor));
 		}
 
 		private static void RegisterBundles()

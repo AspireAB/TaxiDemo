@@ -63,7 +63,7 @@ namespace TaxiBackend
                         double lat = bus.Latitude;
                         double lon = bus.Longitude;
 
-                        publisher.Tell(new Publisher.Position(lon, lat, id, source));
+                        publisher.Tell(new Presenter.Position(lon, lat, id, source));
                     }
 
                     //how long should we wait before polling again?
