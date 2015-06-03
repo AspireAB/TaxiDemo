@@ -9,10 +9,7 @@ namespace TaxiShared
 
         public PresenterActor()
         {
-            Receive<Terminated>(t =>
-            {
-                _clients.RemoveWhere(c => c.Equals(t.ActorRef));
-            });
+            Receive<Terminated>(t => { _clients.RemoveWhere(c => c.Equals(t.ActorRef)); });
             Receive<Presenter.Initialize>(i =>
             {
                 _clients.Add(i.Client);
@@ -20,7 +17,7 @@ namespace TaxiShared
             });
             ReceiveAny(m =>
             {
-                foreach(var client in _clients)
+                foreach (var client in _clients)
                     client.Tell(m);
             });
         }

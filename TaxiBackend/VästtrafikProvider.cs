@@ -12,7 +12,8 @@ namespace TaxiBackend
     {
         public static async void Run(IActorRef publisher)
         {
-            const string url = "http://reseplanerare.vasttrafik.se/bin/query.exe/dny?&look_minx=0&look_maxx=99999999&look_miny=0&look_maxy=99999999&tpl=trains2json&performLocating=1";
+            const string url =
+                "http://reseplanerare.vasttrafik.se/bin/query.exe/dny?&look_minx=0&look_maxx=99999999&look_miny=0&look_maxy=99999999&tpl=trains2json&performLocating=1";
             var c = new WebClient();
             while (true)
             {
@@ -23,8 +24,8 @@ namespace TaxiBackend
                 foreach (var bus in res.look.trains)
                 {
                     string id = bus.trainid;
-                    double lat = bus.y / 1000000d;
-                    double lon = bus.x / 1000000d;
+                    double lat = bus.y/1000000d;
+                    double lon = bus.x/1000000d;
 
                     publisher.Tell(new Presenter.Position(lon, lat, id, "Västtrafik"));
                 }

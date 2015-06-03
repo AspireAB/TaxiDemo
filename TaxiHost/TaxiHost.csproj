@@ -32,11 +32,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Akka">
-      <HintPath>..\packages\Akka.1.0.1\lib\net45\Akka.dll</HintPath>
+    <Reference Include="Akka, Version=1.0.2.9, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Akka.1.0.2\lib\net45\Akka.dll</HintPath>
     </Reference>
-    <Reference Include="Akka.Remote">
-      <HintPath>..\packages\Akka.Remote.1.0.1\lib\net45\Akka.Remote.dll</HintPath>
+    <Reference Include="Akka.Remote, Version=1.0.2.9, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Akka.Remote.1.0.2\lib\net45\Akka.Remote.dll</HintPath>
     </Reference>
     <Reference Include="Google.ProtocolBuffers, Version=2.4.1.555, Culture=neutral, PublicKeyToken=55f7125234beb589, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

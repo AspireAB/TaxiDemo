@@ -26,15 +26,15 @@ var App;
             this.updateStatus = function (status) {
                 _this.status = status;
                 switch (status) {
-                    case 1 /* active */:
+                    case App.GpsStatus.active:
                         _this.icon.fillColor = "#00FF00";
                         _this.icon.path = google.maps.SymbolPath.FORWARD_CLOSED_ARROW;
                         break;
-                    case 0 /* inactive */:
+                    case App.GpsStatus.inactive:
                         _this.icon.fillColor = "#FF0000";
                         _this.icon.path = google.maps.SymbolPath.CIRCLE;
                         break;
-                    case 2 /* parked */:
+                    case App.GpsStatus.parked:
                         _this.icon.fillColor = "#0000FF";
                         _this.icon.path = google.maps.SymbolPath.CIRCLE;
                         break;
@@ -78,26 +78,26 @@ var App;
             };
             this.marker = new google.maps.Marker({ map: this.map, icon: this.icon });
             this.info = new google.maps.InfoWindow({ content: this.id });
-            this.marker.addListener('click', this.onClick);
+            this.marker.addListener("click", this.onClick);
             App.track(this);
         }
         Object.defineProperty(MovingVehicle.prototype, "isActive", {
             get: function () {
-                return this.status === 1 /* active */;
+                return this.status === App.GpsStatus.active;
             },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(MovingVehicle.prototype, "isInactive", {
             get: function () {
-                return this.status === 0 /* inactive */;
+                return this.status === App.GpsStatus.inactive;
             },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(MovingVehicle.prototype, "isParked", {
             get: function () {
-                return this.status === 2 /* parked */;
+                return this.status === App.GpsStatus.parked;
             },
             enumerable: true,
             configurable: true

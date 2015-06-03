@@ -1,11 +1,5 @@
-﻿using System;
-using System.Globalization;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using Akka.Actor;
-using Newtonsoft.Json;
+﻿using Akka.Actor;
+using Serilog;
 using TaxiShared;
 
 namespace TaxiBackend
@@ -16,23 +10,28 @@ namespace TaxiBackend
 
         public TransitBackendService()
         {
+            var logger = new LoggerConfiguration().WriteTo.ColoredConsole().MinimumLevel.Debug().CreateLogger();
+            //var logger = new LoggerConfiguration()
+            //    .WriteTo.Elasticsearch()
+            //    .MinimumLevel.Debug()
+            //    .CreateLogger();
+            Log.Logger = logger;
+
             _system = ActorSystem.Create("TaxiBackend");
             var presenter = _system.ActorOf(Props.Create(() => new PresenterActor()), "presenter");
             var publisher = _system.ActorOf(Props.Create(() => new PublisherActor(presenter)), "publisher");
 
-            //RunLondon(publisher);
+            //     RunLondon(publisher);
 
             //RunFoo(publisher);
 
             VästtrafikProvider.Run(publisher);
 
-     //       LadotProvider.Run(publisher);
-
+            LadotProvider.Run(publisher);
         }
 
         public void Start()
         {
-
         }
 
         public void Stop()

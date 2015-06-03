@@ -2,14 +2,15 @@
 using Owin;
 using TaxiFrontend;
 
-[assembly: OwinStartup(typeof(Startup))]
+[assembly: OwinStartup(typeof (Startup))]
+
 namespace TaxiFrontend
 {
-   public class Startup
-   {
-      public void Configuration(IAppBuilder app)
-      {
-         app.MapSignalR();
-      }
-   }
+    public class Startup
+    {
+        public void Configuration(IAppBuilder app)
+        {
+            app.MapSignalR();
+        }
+    }
 }

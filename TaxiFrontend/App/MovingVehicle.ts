@@ -4,10 +4,9 @@
         private marker: google.maps.Marker;
         private line: google.maps.Polyline;
         private icon: any;
-
-        public status: GpsStatus = null;
-        private showingInfo: boolean = false;
-		  public inBounds: boolean = false;
+        status: GpsStatus = null;
+        private showingInfo = false;
+        inBounds = false;
         private position: google.maps.LatLng;
 
         constructor(public id: string, private map: google.maps.Map) {
@@ -24,91 +23,88 @@
 
             this.info = new google.maps.InfoWindow({ content: this.id });
 
-            this.marker.addListener('click', this.onClick);
+            this.marker.addListener("click", this.onClick);
 
             track(this);
         }
 
         //TODO: obsolete this.. send all state in position msg instead
-        public setStatus = (status: GpsStatus) => {
+        setStatus = (status: GpsStatus) => {
             this.updateStatus(status);
-				this.marker.set("icon", this.icon);
-        }
+            this.marker.set("icon", this.icon);
+        };
 
-        public get isActive() {
+        get isActive() {
             return this.status === GpsStatus.active;
         }
 
-        public get isInactive() {
+        get isInactive() {
             return this.status === GpsStatus.inactive;
         }
 
-        public get isParked() {
+        get isParked() {
             return this.status === GpsStatus.parked;
         }
 
-        public get isNoState() {
+        get isNoState() {
             return this.status === null;
         }
 
-        public setPosition = (bearing: number, position: google.maps.LatLng,status: GpsStatus) => {
+        setPosition = (bearing: number, position: google.maps.LatLng, status: GpsStatus) => {
             this.position = position;
             this.viewPortChanged();
-	         this.updateStatus(status);
+            this.updateStatus(status);
             this.marker.setPosition(position);
             this.icon.rotation = bearing;
             this.marker.set("icon", this.icon);
             if (this.showingInfo) {
                 this.info.setPosition(position);
             }
-        }
-
-		 private updateStatus = (status: GpsStatus) => {
-			 this.status = status;
-			 switch (status) {
-				 case GpsStatus.active:
-					 this.icon.fillColor = "#00FF00";
-					 this.icon.path = google.maps.SymbolPath.FORWARD_CLOSED_ARROW;
-					 break;
-				 case GpsStatus.inactive:
-					 this.icon.fillColor = "#FF0000";
-					 this.icon.path = google.maps.SymbolPath.CIRCLE;
-					 break;
-				 case GpsStatus.parked:
-					 this.icon.fillColor = "#0000FF";
-					 this.icon.path = google.maps.SymbolPath.CIRCLE;
-					 break;
-			 }
-		 }
+        };
+        private updateStatus = (status: GpsStatus) => {
+            this.status = status;
+            switch (status) {
+            case GpsStatus.active:
+                this.icon.fillColor = "#00FF00";
+                this.icon.path = google.maps.SymbolPath.FORWARD_CLOSED_ARROW;
+                break;
+            case GpsStatus.inactive:
+                this.icon.fillColor = "#FF0000";
+                this.icon.path = google.maps.SymbolPath.CIRCLE;
+                break;
+            case GpsStatus.parked:
+                this.icon.fillColor = "#0000FF";
+                this.icon.path = google.maps.SymbolPath.CIRCLE;
+                break;
+            }
+        };
 
         private isInBounds() {
-            if(this.position)
+            if (this.position)
                 return this.map.getBounds().contains(this.position);
             return false;
         }
 
-        public onClick = () => {
+        onClick = () => {
             this.map.panTo(this.position);
 
             this.showingInfo = !this.showingInfo;
 
             if (this.showingInfo) {
-					this.info.open(this.map, this.marker);
-					this.info.setPosition(this.position);
+                this.info.open(this.map, this.marker);
+                this.info.setPosition(this.position);
             } else {
-					this.info.close();
+                this.info.close();
             }
-        }
-
+        };
         private setColor = (color: string) => {
             this.icon.fillColor = color;
             this.marker.set("icon", this.icon);
-        }
+        };
+        viewPortChanged = () => {
+            this.inBounds = this.isInBounds();
 
-        public viewPortChanged = () => {
-			  this.inBounds = this.isInBounds();
-
-			  if (this.inBounds) {
+            if (this.inBounds) {
                 if (this.marker.getMap() === null) {
                     this.marker.setMap(this.map);
                 }
@@ -117,6 +113,6 @@
                     this.marker.setMap(null);
                 }
             }
-        }
+        };
     }
 }

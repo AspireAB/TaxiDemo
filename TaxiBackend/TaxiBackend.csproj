@@ -32,11 +32,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Akka">
-      <HintPath>..\packages\Akka.1.0.1\lib\net45\Akka.dll</HintPath>
+    <Reference Include="Akka, Version=1.0.2.9, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Akka.1.0.2\lib\net45\Akka.dll</HintPath>
     </Reference>
-    <Reference Include="Akka.Remote">
-      <HintPath>..\packages\Akka.Remote.1.0.1\lib\net45\Akka.Remote.dll</HintPath>
+    <Reference Include="Akka.Logger.Serilog, Version=1.0.2.9, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Akka.Logger.Serilog.1.0.2\lib\net45\Akka.Logger.Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Akka.Remote, Version=1.0.2.9, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Akka.Remote.1.0.2\lib\net45\Akka.Remote.dll</HintPath>
+    </Reference>
+    <Reference Include="Elasticsearch.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Elasticsearch.Net.1.5.1\lib\net45\Elasticsearch.Net.dll</HintPath>
     </Reference>
     <Reference Include="Google.ProtocolBuffers, Version=2.4.1.555, Culture=neutral, PublicKeyToken=55f7125234beb589, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -53,6 +63,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Serilog, Version=1.5.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Serilog.1.5.6\lib\net45\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.FullNetFx, Version=1.5.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Serilog.1.5.6\lib\net45\Serilog.FullNetFx.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.Elasticsearch">
+      <HintPath>..\packages\Serilog.Sinks.Elasticsearch.2.0.37\lib\net45\Serilog.Sinks.Elasticsearch.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Device" />
@@ -61,8 +82,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Topshelf">
-      <HintPath>..\packages\Topshelf.3.1.4\lib\net40-full\Topshelf.dll</HintPath>
+    <Reference Include="Topshelf, Version=3.2.150.0, Culture=neutral, PublicKeyToken=b800c4cfcdeea87b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Topshelf.3.2.0\lib\net40-full\Topshelf.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>

@@ -1,7 +1,7 @@
 ﻿using Topshelf;
 
 namespace TaxiBackend
-{    
+{
     public class Program
     {
         public static void Main()

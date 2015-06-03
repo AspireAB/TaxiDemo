@@ -25,19 +25,20 @@ namespace TaxiFrontend.Actors
         public AggregatorActor(IActorRef presenter)
         {
             var set = new Dictionary<string, Taxi.PositionBearing>();
-            Context.System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(5),TimeSpan.FromSeconds(5),Self,"foo",Self  );
+            Context.System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), Self,
+                "foo", Self);
 
             Receive<string>(_ =>
             {
                 var groups = set.Values.GroupBy(p => new
                 {
                     Longitude = 0.5 + (int) p.Longitude,
-                    Latitude = 0.5 + (int)p.Latitude
+                    Latitude = 0.5 + (int) p.Latitude
                 }).ToList();
 
                 foreach (var group in groups)
                 {
-                    presenter.Tell(new AggregatedData(group.Count(),group.Key.Latitude,group.Key.Longitude));
+                    presenter.Tell(new AggregatedData(group.Count(), group.Key.Latitude, group.Key.Longitude));
                 }
 
                 set.Clear();
@@ -45,7 +46,7 @@ namespace TaxiFrontend.Actors
             Receive<Taxi.PositionBearing>(p =>
             {
                 set.Remove(p.Id);
-                set.Add(p.Id,p);
+                set.Add(p.Id, p);
             });
         }
     }

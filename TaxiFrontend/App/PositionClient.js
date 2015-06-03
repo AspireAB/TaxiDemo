@@ -7,7 +7,7 @@ var App;
             this.map = null;
             this.vehicles = [];
             this.searchText = "";
-            this.includedStateValues = [1 /* active */];
+            this.includedStateValues = [App.GpsStatus.active];
             this.isIncluded = function (status) {
                 return _this.includedStateValues.indexOf(status) !== -1;
             };
@@ -24,8 +24,8 @@ var App;
                     zoom: 13,
                     center: new google.maps.LatLng(57.70887000, 11.97456000)
                 };
-                _this.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-                google.maps.event.addListener(_this.map, 'idle', function () {
+                _this.map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+                google.maps.event.addListener(_this.map, "idle", function () {
                     _this.vehicles.forEach(function (v) { return v.viewPortChanged(); });
                     _this.updateBounds();
                 });
